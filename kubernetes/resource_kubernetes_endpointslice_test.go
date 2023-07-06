@@ -15,7 +15,7 @@ import (
 func TestAccKubernetesEndpointSlice_basic(t *testing.T) {
 	name := fmt.Sprintf("tf-acc-test-%s", acctest.RandStringFromCharSet(10, acctest.CharSetAlphaNum))
 
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		IDRefreshName:     "kubernetes_endpoint_slice_v1.test",
 		IDRefreshIgnore:   []string{"metadata.0.resource_version"},
@@ -72,7 +72,7 @@ func TestAccKubernetesEndpointSlice_basic(t *testing.T) {
 func TestAccKubernetesEndpointSlice_generatedName(t *testing.T) {
 	prefix := "tf-acc-test-gen-"
 
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		IDRefreshName:     "kubernetes_endpoint_slice_v1.test",
 		IDRefreshIgnore:   []string{"metadata.0.resource_version"},

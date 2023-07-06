@@ -20,7 +20,7 @@ func TestAccKubernetesRole_basic(t *testing.T) {
 	var conf api.Role
 	name := fmt.Sprintf("tf-acc-test:%s", acctest.RandStringFromCharSet(10, acctest.CharSetAlphaNum))
 
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		IDRefreshName:     "kubernetes_role.test",
 		IDRefreshIgnore:   []string{"metadata.0.resource_version"},
@@ -88,7 +88,7 @@ func TestAccKubernetesRole_generatedName(t *testing.T) {
 	var conf api.Role
 	prefix := "tf-acc-test-gen:"
 
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		IDRefreshName:     "kubernetes_role.test",
 		IDRefreshIgnore:   []string{"metadata.0.resource_version"},
@@ -115,7 +115,7 @@ func TestAccKubernetesRole_generatedName(t *testing.T) {
 func TestAccKubernetesRole_Bug(t *testing.T) {
 	var conf api.Role
 	name := fmt.Sprintf("tf-acc-test:%s", acctest.RandStringFromCharSet(10, acctest.CharSetAlphaNum))
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		IDRefreshName:     "kubernetes_role.test",
 		IDRefreshIgnore:   []string{"metadata.0.resource_version"},

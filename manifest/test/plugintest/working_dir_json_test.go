@@ -19,7 +19,7 @@ func TestJSONConfig(t *testing.T) {
 	providerFactories := map[string]func() (*schema.Provider, error){
 		"tst": func() (*schema.Provider, error) { return tstProvider(), nil }, //nolint:unparam // required signature
 	}
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		IsUnitTest:        true,
 		ProviderFactories: providerFactories,
 		Steps: []resource.TestStep{{

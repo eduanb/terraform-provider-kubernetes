@@ -21,7 +21,7 @@ func TestAccKubernetesNamespace_basic(t *testing.T) {
 	nsName := fmt.Sprintf("tf-acc-test-%s", acctest.RandStringFromCharSet(10, acctest.CharSetAlphaNum))
 	resourceName := "kubernetes_namespace.test"
 
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		IDRefreshName:     "kubernetes_namespace.test",
 		IDRefreshIgnore:   []string{"metadata.0.resource_version"},
@@ -115,7 +115,7 @@ func TestAccKubernetesNamespace_default_service_account(t *testing.T) {
 	nsName := fmt.Sprintf("tf-acc-test-%s", acctest.RandStringFromCharSet(10, acctest.CharSetAlphaNum))
 	resourceName := "kubernetes_namespace.test"
 
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		IDRefreshName:     resourceName,
 		ProviderFactories: testAccProviderFactories,
@@ -143,7 +143,7 @@ func TestAccKubernetesNamespace_generatedName(t *testing.T) {
 	prefix := "tf-acc-test-gen-"
 	resourceName := "kubernetes_namespace.test"
 
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		IDRefreshName:     "kubernetes_namespace.test",
 		IDRefreshIgnore:   []string{"metadata.0.resource_version"},
@@ -177,7 +177,7 @@ func TestAccKubernetesNamespace_withSpecialCharacters(t *testing.T) {
 	var conf api.Namespace
 	nsName := fmt.Sprintf("tf-acc-test-%s", acctest.RandStringFromCharSet(10, acctest.CharSetAlphaNum))
 
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		IDRefreshName:     "kubernetes_namespace.test",
 		IDRefreshIgnore:   []string{"metadata.0.resource_version"},
@@ -214,7 +214,7 @@ func TestAccKubernetesNamespace_deleteTimeout(t *testing.T) {
 	var conf api.Namespace
 	nsName := fmt.Sprintf("tf-acc-test-%s", acctest.RandStringFromCharSet(10, acctest.CharSetAlphaNum))
 
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		IDRefreshName:     "kubernetes_namespace.test",
 		IDRefreshIgnore:   []string{"metadata.0.resource_version"},

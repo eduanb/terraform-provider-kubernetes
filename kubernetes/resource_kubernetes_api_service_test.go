@@ -19,7 +19,7 @@ func TestAccKubernetesAPIService_basic(t *testing.T) {
 	version := "v1beta1"
 	name := fmt.Sprintf("%s.%s", version, group)
 
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		IDRefreshName:     "kubernetes_api_service.test",
 		IDRefreshIgnore:   []string{"metadata.0.resource_version"},

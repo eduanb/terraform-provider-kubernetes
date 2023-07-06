@@ -20,7 +20,7 @@ func TestAccKubernetesEndpoints_basic(t *testing.T) {
 	var conf api.Endpoints
 	name := fmt.Sprintf("tf-acc-test-%s", acctest.RandStringFromCharSet(10, acctest.CharSetAlphaNum))
 
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		IDRefreshName:     "kubernetes_endpoints.test",
 		IDRefreshIgnore:   []string{"metadata.0.resource_version"},
@@ -112,7 +112,7 @@ func TestAccKubernetesEndpoints_generatedName(t *testing.T) {
 	var conf api.Endpoints
 	prefix := "tf-acc-test-gen-"
 
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		IDRefreshName:     "kubernetes_endpoints.test",
 		IDRefreshIgnore:   []string{"metadata.0.resource_version"},

@@ -25,7 +25,7 @@ func TestAccKubernetesPersistentVolume_minimal(t *testing.T) {
 	name := fmt.Sprintf("tf-acc-test-%s", randString)
 
 	const resourceName = "kubernetes_persistent_volume.test"
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		IDRefreshName:     resourceName,
 		IDRefreshIgnore:   []string{"metadata.0.resource_version"},
@@ -51,7 +51,7 @@ func TestAccKubernetesPersistentVolume_azure_basic(t *testing.T) {
 	subscriptionID := os.Getenv("ARM_SUBSCRIPTION_ID")
 	diskURI := "/subscriptions/" + subscriptionID + "/resourceGroups/" + name + "/providers/Microsoft.Compute/disks/" + name
 
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t); skipIfNotRunningInAks(t) },
 		IDRefreshName:     "kubernetes_persistent_volume.test",
 		IDRefreshIgnore:   []string{"metadata.0.resource_version"},
@@ -83,7 +83,7 @@ func TestAccKubernetesPersistentVolume_azure_ManagedDiskExpectErrors(t *testing.
 	diskURI := "/subscriptions/" + subscriptionID + "/resourceGroups/" + name + "/providers/Microsoft.Compute/disks/" + name
 	wantError := persistentVolumeAzureManagedError
 
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t); skipIfNotRunningInAks(t) },
 		ProviderFactories: testAccProviderFactories,
 		ExternalProviders: testAccExternalProviders,
@@ -117,7 +117,7 @@ func TestAccKubernetesPersistentVolume_azure_blobStorageDisk(t *testing.T) {
 	diskURI := "https://" + name + ".blob.core.windows.net/" + name
 	wantError := persistentVolumeAzureBlobError
 
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t); skipIfNotRunningInAks(t) },
 		IDRefreshName:     "kubernetes_persistent_volume.test",
 		IDRefreshIgnore:   []string{"metadata.0.resource_version"},
@@ -174,7 +174,7 @@ func TestAccKubernetesPersistentVolume_azure_file(t *testing.T) {
 	secretName := fmt.Sprintf("tfacctest%s", acctest.RandStringFromCharSet(10, acctest.CharSetAlphaNum))
 	location := os.Getenv("TF_VAR_location")
 
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t); skipIfNotRunningInAks(t) },
 		IDRefreshName:     "kubernetes_persistent_volume.test",
 		IDRefreshIgnore:   []string{"metadata.0.resource_version"},
@@ -220,7 +220,7 @@ func TestAccKubernetesPersistentVolume_googleCloud_basic(t *testing.T) {
 	region := os.Getenv("GOOGLE_REGION")
 	zone := os.Getenv("GOOGLE_ZONE")
 
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t); skipIfNotRunningInGke(t) },
 		IDRefreshName:     "kubernetes_persistent_volume.test",
 		IDRefreshIgnore:   []string{"metadata.0.resource_version"},
@@ -301,7 +301,7 @@ func TestAccKubernetesPersistentVolume_aws_basic(t *testing.T) {
 	region := os.Getenv("AWS_DEFAULT_REGION")
 	zone := region + "a"
 
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t); skipIfNotRunningInEks(t) },
 		IDRefreshName:     "kubernetes_persistent_volume.test",
 		IDRefreshIgnore:   []string{"metadata.0.resource_version"},
@@ -377,7 +377,7 @@ func TestAccKubernetesPersistentVolume_googleCloud_volumeSource(t *testing.T) {
 	diskName := fmt.Sprintf("tf-acc-test-disk-%s", randString)
 	zone := os.Getenv("GOOGLE_ZONE")
 
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t); skipIfNotRunningInGke(t) },
 		IDRefreshName:     "kubernetes_persistent_volume.test",
 		IDRefreshIgnore:   []string{"metadata.0.resource_version"},
@@ -436,7 +436,7 @@ func TestAccKubernetesPersistentVolume_hostPath_volumeSource(t *testing.T) {
 	randString := acctest.RandStringFromCharSet(10, acctest.CharSetAlphaNum)
 	name := fmt.Sprintf("tf-acc-test-%s", randString)
 
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		IDRefreshName:     "kubernetes_persistent_volume.test",
 		IDRefreshIgnore:   []string{"metadata.0.resource_version"},
@@ -494,7 +494,7 @@ func TestAccKubernetesPersistentVolume_local_volumeSource(t *testing.T) {
 	randString := acctest.RandStringFromCharSet(10, acctest.CharSetAlphaNum)
 	name := fmt.Sprintf("tf-acc-test-%s", randString)
 
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		IDRefreshName:     "kubernetes_persistent_volume.test",
 		IDRefreshIgnore:   []string{"metadata.0.resource_version"},
@@ -544,7 +544,7 @@ func TestAccKubernetesPersistentVolume_cephFsSecretRef(t *testing.T) {
 	randString := acctest.RandStringFromCharSet(10, acctest.CharSetAlphaNum)
 	name := fmt.Sprintf("tf-acc-test-%s", randString)
 
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		IDRefreshName:     "kubernetes_persistent_volume.test",
 		IDRefreshIgnore:   []string{"metadata.0.resource_version"},
@@ -587,7 +587,7 @@ func TestAccKubernetesPersistentVolume_storageClass(t *testing.T) {
 	diskName := fmt.Sprintf("tf-acc-test-disk-%s", randString)
 	zone := os.Getenv("GOOGLE_ZONE")
 
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t); skipIfNotRunningInGke(t) },
 		IDRefreshName:     "kubernetes_persistent_volume.test",
 		IDRefreshIgnore:   []string{"metadata.0.resource_version"},
@@ -639,7 +639,7 @@ func TestAccKubernetesPersistentVolume_hostPath_nodeAffinity(t *testing.T) {
 	name := fmt.Sprintf("tf-acc-test-%s", randString)
 	keyName := "spec.0.node_affinity.0.required.0.node_selector_term.0.match_expressions"
 
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		IDRefreshName:     "kubernetes_persistent_volume.test",
 		IDRefreshIgnore:   []string{"metadata.0.resource_version"},
@@ -706,7 +706,7 @@ func TestAccKubernetesPersistentVolume_hostPath_mountOptions(t *testing.T) {
 	randString := acctest.RandStringFromCharSet(10, acctest.CharSetAlphaNum)
 	name := fmt.Sprintf("tf-acc-test-%s", randString)
 
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		IDRefreshName:     "kubernetes_persistent_volume.test",
 		IDRefreshIgnore:   []string{"metadata.0.resource_version"},
@@ -728,7 +728,7 @@ func TestAccKubernetesPersistentVolume_hostPath_mountOptions(t *testing.T) {
 func TestAccKubernetesPersistentVolume_csi_basic(t *testing.T) {
 	var conf api.PersistentVolume
 	name := acctest.RandomWithPrefix("tf-acc-test")
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		IDRefreshName:     "kubernetes_persistent_volume.test",
 		IDRefreshIgnore:   []string{"metadata.0.resource_version"},
@@ -799,7 +799,7 @@ func TestAccKubernetesPersistentVolume_csi_basic(t *testing.T) {
 func TestAccKubernetesPersistentVolume_csi_secrets(t *testing.T) {
 	var conf api.PersistentVolume
 	name := acctest.RandomWithPrefix("tf-acc-test")
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		IDRefreshName:     "kubernetes_persistent_volume.test",
 		IDRefreshIgnore:   []string{"metadata.0.resource_version"},
@@ -847,7 +847,7 @@ func TestAccKubernetesPersistentVolume_csi_secrets(t *testing.T) {
 func TestAccKubernetesPersistentVolume_volumeMode(t *testing.T) {
 	var conf api.PersistentVolume
 	name := acctest.RandomWithPrefix("tf-acc-test")
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		IDRefreshName:     "kubernetes_persistent_volume.test",
 		IDRefreshIgnore:   []string{"metadata.0.resource_version"},
@@ -887,7 +887,7 @@ func TestAccKubernetesPersistentVolume_hostpath_claimRef(t *testing.T) {
 	name := fmt.Sprintf("tf-acc-test-%s", randString)
 
 	const resourceName = "kubernetes_persistent_volume.test"
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		IDRefreshName:     resourceName,
 		IDRefreshIgnore:   []string{"metadata.0.resource_version"},

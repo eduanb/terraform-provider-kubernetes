@@ -17,7 +17,7 @@ func TestAccKubernetesConfigMapV1Data_basic(t *testing.T) {
 	namespace := "default"
 	resourceName := "kubernetes_config_map_v1_data.test"
 
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck: func() {
 			testAccPreCheck(t)
 			createConfigMap(name, namespace)

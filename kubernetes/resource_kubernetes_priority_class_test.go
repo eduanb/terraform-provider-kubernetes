@@ -20,7 +20,7 @@ func TestAccKubernetesPriorityClass_basic(t *testing.T) {
 	name := fmt.Sprintf("tf-acc-test-%s", acctest.RandString(10))
 	resourceName := "kubernetes_priority_class.test"
 
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		IDRefreshName:     resourceName,
 		IDRefreshIgnore:   []string{"metadata.0.resource_version"},
@@ -94,7 +94,7 @@ func TestAccKubernetesPriorityClass_generatedName(t *testing.T) {
 	var conf api.PriorityClass
 	prefix := "tf-acc-test-"
 
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		IDRefreshName:     "kubernetes_priority_class.test",
 		IDRefreshIgnore:   []string{"metadata.0.resource_version"},

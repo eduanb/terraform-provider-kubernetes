@@ -16,7 +16,7 @@ func TestAccKubernetesDataSourceSecret_basic(t *testing.T) {
 	resourceName := "kubernetes_secret.test"
 	datasourceName := "data.kubernetes_secret.test"
 
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		ProviderFactories: testAccProviderFactories,
 		Steps: []resource.TestStep{
@@ -54,7 +54,7 @@ func TestAccKubernetesDataSourceSecret_GenerateName(t *testing.T) {
 	resourceName := "kubernetes_secret.test"
 	datasourceName := "data.kubernetes_secret.test"
 
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		ProviderFactories: testAccProviderFactories,
 		Steps: []resource.TestStep{

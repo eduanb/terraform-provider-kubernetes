@@ -21,7 +21,7 @@ func TestAccKubernetesRoleBinding_basic(t *testing.T) {
 	name := fmt.Sprintf("tf-acc-test:%s", acctest.RandStringFromCharSet(10, acctest.CharSetAlphaNum))
 	resourceName := "kubernetes_role_binding.test"
 
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		IDRefreshName:     resourceName,
 		IDRefreshIgnore:   []string{"metadata.0.resource_version"},
@@ -135,7 +135,7 @@ func TestAccKubernetesRoleBinding_generatedName(t *testing.T) {
 	prefix := "tf-acc-test-gen:"
 	resourceName := "kubernetes_role_binding.test"
 
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		IDRefreshName:     "kubernetes_role_binding.test",
 		IDRefreshIgnore:   []string{"metadata.0.resource_version"},
@@ -168,7 +168,7 @@ func TestAccKubernetesRoleBinding_sa_subject(t *testing.T) {
 	var conf api.RoleBinding
 	name := fmt.Sprintf("tf-acc-test:%s", acctest.RandStringFromCharSet(10, acctest.CharSetAlphaNum))
 
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		IDRefreshName:     "kubernetes_role_binding.test",
 		IDRefreshIgnore:   []string{"metadata.0.resource_version"},
@@ -201,7 +201,7 @@ func TestAccKubernetesRoleBinding_group_subject(t *testing.T) {
 	var conf api.RoleBinding
 	name := fmt.Sprintf("tf-acc-test:%s", acctest.RandStringFromCharSet(10, acctest.CharSetAlphaNum))
 
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		IDRefreshName:     "kubernetes_role_binding.test",
 		IDRefreshIgnore:   []string{"metadata.0.resource_version"},
@@ -234,7 +234,7 @@ func TestAccKubernetesRoleBinding_Bug(t *testing.T) {
 	var conf api.RoleBinding
 	name := fmt.Sprintf("tf-acc-test:%s", acctest.RandStringFromCharSet(10, acctest.CharSetAlphaNum))
 
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		IDRefreshName:     "kubernetes_role_binding.test",
 		IDRefreshIgnore:   []string{"metadata.0.resource_version"},

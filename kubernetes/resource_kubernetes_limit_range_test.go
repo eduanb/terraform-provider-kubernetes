@@ -20,7 +20,7 @@ func TestAccKubernetesLimitRange_basic(t *testing.T) {
 	name := fmt.Sprintf("tf-acc-test-%s", acctest.RandString(10))
 	resourceName := "kubernetes_limit_range.test"
 
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		IDRefreshName:     "kubernetes_limit_range.test",
 		IDRefreshIgnore:   []string{"metadata.0.resource_version"},
@@ -115,7 +115,7 @@ func TestAccKubernetesLimitRange_empty(t *testing.T) {
 	var conf api.LimitRange
 	name := fmt.Sprintf("tf-acc-test-%s", acctest.RandString(10))
 
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		IDRefreshName:     "kubernetes_limit_range.test",
 		IDRefreshIgnore:   []string{"metadata.0.resource_version"},
@@ -143,7 +143,7 @@ func TestAccKubernetesLimitRange_generatedName(t *testing.T) {
 	var conf api.LimitRange
 	prefix := "tf-acc-test-"
 
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		IDRefreshName:     "kubernetes_limit_range.test",
 		IDRefreshIgnore:   []string{"metadata.0.resource_version"},
@@ -172,7 +172,7 @@ func TestAccKubernetesLimitRange_typeChange(t *testing.T) {
 	var conf api.LimitRange
 	name := fmt.Sprintf("tf-acc-test-%s", acctest.RandString(10))
 
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		IDRefreshName:     "kubernetes_limit_range.test",
 		IDRefreshIgnore:   []string{"metadata.0.resource_version"},
@@ -221,7 +221,7 @@ func TestAccKubernetesLimitRange_multipleLimits(t *testing.T) {
 	var conf api.LimitRange
 	name := fmt.Sprintf("tf-acc-test-%s", acctest.RandString(10))
 
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		IDRefreshName:     "kubernetes_limit_range.test",
 		IDRefreshIgnore:   []string{"metadata.0.resource_version"},

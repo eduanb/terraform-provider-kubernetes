@@ -21,7 +21,7 @@ func TestAccKubernetesDaemonSet_minimal(t *testing.T) {
 	name := fmt.Sprintf("tf-acc-test-%s", acctest.RandStringFromCharSet(10, acctest.CharSetAlphaNum))
 	imageName := nginxImageVersion
 
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		IDRefreshName:     "kubernetes_daemonset.test",
 		IDRefreshIgnore:   []string{"metadata.0.resource_version"},
@@ -48,7 +48,7 @@ func TestAccKubernetesDaemonSet_basic(t *testing.T) {
 	imageName := nginxImageVersion
 	imageName1 := nginxImageVersion1
 
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		IDRefreshName:     resourceName,
 		IDRefreshIgnore:   []string{"metadata.0.resource_version"},
@@ -125,7 +125,7 @@ func TestAccKubernetesDaemonSet_with_template_metadata(t *testing.T) {
 	depName := fmt.Sprintf("tf-acc-test-%s", acctest.RandStringFromCharSet(10, acctest.CharSetAlphaNum))
 	imageName := nginxImageVersion
 
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		ProviderFactories: testAccProviderFactories,
 		IDRefreshName:     "kubernetes_daemonset.test",
@@ -165,7 +165,7 @@ func TestAccKubernetesDaemonSet_initContainer(t *testing.T) {
 	name := fmt.Sprintf("tf-acc-test-%s", acctest.RandStringFromCharSet(10, acctest.CharSetAlphaNum))
 	imageName := nginxImageVersion
 
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		IDRefreshName:     "kubernetes_daemonset.test",
 		IDRefreshIgnore:   []string{"metadata.0.resource_version"},
@@ -186,7 +186,7 @@ func TestAccKubernetesDaemonSet_noTopLevelLabels(t *testing.T) {
 	var conf appsv1.DaemonSet
 	name := fmt.Sprintf("tf-acc-test-%s", acctest.RandStringFromCharSet(10, acctest.CharSetAlphaNum))
 
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		IDRefreshName:     "kubernetes_daemonset.test",
 		IDRefreshIgnore:   []string{"metadata.0.resource_version"},
@@ -212,7 +212,7 @@ func TestAccKubernetesDaemonSet_with_tolerations(t *testing.T) {
 	tolerationSeconds := 6000
 	operator := "Equal"
 
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		ProviderFactories: testAccProviderFactories,
 		IDRefreshName:     "kubernetes_daemonset.test",
@@ -242,7 +242,7 @@ func TestAccKubernetesDaemonSet_with_tolerations_unset_toleration_seconds(t *tes
 	operator := "Equal"
 	value := "value"
 
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		ProviderFactories: testAccProviderFactories,
 		IDRefreshName:     "kubernetes_daemonset.test",
@@ -270,7 +270,7 @@ func TestAccKubernetesDaemonSet_with_container_security_context_seccomp_profile(
 	imageName := nginxImageVersion
 	resourceName := "kubernetes_daemonset.test"
 
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		IDRefreshName:     "kubernetes_daemonset.test",
 		IDRefreshIgnore:   []string{"metadata.0.resource_version"},
@@ -303,7 +303,7 @@ func TestAccKubernetesDaemonSet_with_container_security_context_seccomp_localhos
 	imageName := nginxImageVersion
 	resourceName := "kubernetes_daemonset.test"
 
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t); skipIfNotRunningInKind(t); skipIfClusterVersionLessThan(t, "1.19.0") },
 		IDRefreshName:     "kubernetes_daemonset.test",
 		IDRefreshIgnore:   []string{"metadata.0.resource_version"},
@@ -331,7 +331,7 @@ func TestAccKubernetesDaemonSet_with_resource_requirements(t *testing.T) {
 	imageName := nginxImageVersion
 	resourceName := "kubernetes_daemon_set_v1.test"
 
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		ProviderFactories: testAccProviderFactories,
 		CheckDestroy:      testAccCheckKubernetesDaemonSetDestroy,

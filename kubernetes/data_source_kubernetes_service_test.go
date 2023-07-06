@@ -16,7 +16,7 @@ func TestAccKubernetesDataSourceService_basic(t *testing.T) {
 	resourceName := "kubernetes_service.test"
 	dataSourceName := "data.kubernetes_service.test"
 
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		ProviderFactories: testAccProviderFactories,
 		Steps: []resource.TestStep{

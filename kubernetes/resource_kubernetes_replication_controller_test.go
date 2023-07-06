@@ -22,7 +22,7 @@ func TestAccKubernetesReplicationController_minimal(t *testing.T) {
 	name := fmt.Sprintf("tf-acc-test-%s", acctest.RandStringFromCharSet(10, acctest.CharSetAlphaNum))
 	imageName := busyboxImageVersion
 
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		IDRefreshName:     "kubernetes_replication_controller.test",
 		IDRefreshIgnore:   []string{"metadata.0.resource_version"},
@@ -51,7 +51,7 @@ func TestAccKubernetesReplicationController_basic(t *testing.T) {
 	imageName := nginxImageVersion
 	replicas := getReplicaCount()
 
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		IDRefreshName:     "kubernetes_replication_controller.test",
 		IDRefreshIgnore:   []string{"metadata.0.resource_version"},
@@ -114,7 +114,7 @@ func TestAccKubernetesReplicationController_initContainer(t *testing.T) {
 	name := fmt.Sprintf("tf-acc-test-%s", acctest.RandStringFromCharSet(10, acctest.CharSetAlphaNum))
 	replicas := getReplicaCount()
 
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		IDRefreshName:     "kubernetes_replication_controller.test",
 		IDRefreshIgnore:   []string{"metadata.0.resource_version"},
@@ -164,7 +164,7 @@ func TestAccKubernetesReplicationController_generatedName(t *testing.T) {
 	prefix := "tf-acc-test-gen-"
 	imageName := nginxImageVersion
 
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		IDRefreshName:     "kubernetes_replication_controller.test",
 		IDRefreshIgnore:   []string{"metadata.0.resource_version"},
@@ -200,7 +200,7 @@ func TestAccKubernetesReplicationController_with_security_context(t *testing.T) 
 	rcName := fmt.Sprintf("tf-acc-test-%s", acctest.RandStringFromCharSet(10, acctest.CharSetAlphaNum))
 	imageName := nginxImageVersion
 
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		ProviderFactories: testAccProviderFactories,
 		CheckDestroy:      testAccCheckKubernetesReplicationControllerDestroy,
@@ -226,7 +226,7 @@ func TestAccKubernetesReplicationController_with_security_context_run_as_group(t
 	rcName := fmt.Sprintf("tf-acc-test-%s", acctest.RandStringFromCharSet(10, acctest.CharSetAlphaNum))
 	imageName := nginxImageVersion
 
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t); skipIfUnsupportedSecurityContextRunAsGroup(t) },
 		ProviderFactories: testAccProviderFactories,
 		CheckDestroy:      testAccCheckKubernetesReplicationControllerDestroy,
@@ -253,7 +253,7 @@ func TestAccKubernetesReplicationController_with_container_liveness_probe_using_
 	rcName := fmt.Sprintf("tf-acc-test-%s", acctest.RandStringFromCharSet(10, acctest.CharSetAlphaNum))
 	imageName := "gcr.io/google_containers/busybox"
 
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		ProviderFactories: testAccProviderFactories,
 		CheckDestroy:      testAccCheckKubernetesReplicationControllerDestroy,
@@ -282,7 +282,7 @@ func TestAccKubernetesReplicationController_with_container_liveness_probe_using_
 	rcName := fmt.Sprintf("tf-acc-test-%s", acctest.RandStringFromCharSet(10, acctest.CharSetAlphaNum))
 	imageName := "registry.k8s.io/e2e-test-images/agnhost:2.40"
 
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		ProviderFactories: testAccProviderFactories,
 		CheckDestroy:      testAccCheckKubernetesReplicationControllerDestroy,
@@ -312,7 +312,7 @@ func TestAccKubernetesReplicationController_with_container_liveness_probe_using_
 	rcName := fmt.Sprintf("tf-acc-test-%s", acctest.RandStringFromCharSet(10, acctest.CharSetAlphaNum))
 	imageName := "registry.k8s.io/e2e-test-images/agnhost:2.40"
 
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		ProviderFactories: testAccProviderFactories,
 		CheckDestroy:      testAccCheckKubernetesReplicationControllerDestroy,
@@ -337,7 +337,7 @@ func TestAccKubernetesReplicationController_with_container_lifecycle(t *testing.
 	rcName := fmt.Sprintf("tf-acc-test-%s", acctest.RandStringFromCharSet(10, acctest.CharSetAlphaNum))
 	imageName := "registry.k8s.io/e2e-test-images/agnhost:2.40"
 
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		ProviderFactories: testAccProviderFactories,
 		CheckDestroy:      testAccCheckKubernetesReplicationControllerDestroy,
@@ -368,7 +368,7 @@ func TestAccKubernetesReplicationController_with_container_security_context(t *t
 	rcName := fmt.Sprintf("tf-acc-test-%s", acctest.RandStringFromCharSet(10, acctest.CharSetAlphaNum))
 	imageName := nginxImageVersion
 
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		ProviderFactories: testAccProviderFactories,
 		CheckDestroy:      testAccCheckKubernetesReplicationControllerDestroy,
@@ -392,7 +392,7 @@ func TestAccKubernetesReplicationController_with_volume_mount(t *testing.T) {
 
 	imageName := nginxImageVersion
 
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		ProviderFactories: testAccProviderFactories,
 		CheckDestroy:      testAccCheckKubernetesReplicationControllerDestroy,
@@ -420,7 +420,7 @@ func TestAccKubernetesReplicationController_with_resource_requirements(t *testin
 
 	imageName := nginxImageVersion
 
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		ProviderFactories: testAccProviderFactories,
 		CheckDestroy:      testAccCheckKubernetesReplicationControllerDestroy,
@@ -446,7 +446,7 @@ func TestAccKubernetesReplicationController_with_empty_dir_volume(t *testing.T) 
 	rcName := fmt.Sprintf("tf-acc-test-%s", acctest.RandStringFromCharSet(10, acctest.CharSetAlphaNum))
 	imageName := nginxImageVersion
 
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		ProviderFactories: testAccProviderFactories,
 		CheckDestroy:      testAccCheckKubernetesReplicationControllerDestroy,

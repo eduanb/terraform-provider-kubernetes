@@ -20,7 +20,7 @@ func TestAccKubernetesClusterRoleBinding_basic(t *testing.T) {
 	var conf api.ClusterRoleBinding
 	name := fmt.Sprintf("tf-acc-test:%s", acctest.RandStringFromCharSet(10, acctest.CharSetAlphaNum))
 
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		IDRefreshName:     "kubernetes_cluster_role_binding.test",
 		IDRefreshIgnore:   []string{"metadata.0.resource_version"},
@@ -128,7 +128,7 @@ func TestAccKubernetesClusterRoleBinding_generatedName(t *testing.T) {
 	var conf api.ClusterRoleBinding
 	prefix := "tf-acc-test-gen:"
 
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		IDRefreshName:     "kubernetes_cluster_role_binding.test",
 		IDRefreshIgnore:   []string{"metadata.0.resource_version"},
@@ -161,7 +161,7 @@ func TestAccKubernetesClusterRoleBinding_serviceaccount_subject(t *testing.T) {
 	var conf api.ClusterRoleBinding
 	name := fmt.Sprintf("tf-acc-test:%s", acctest.RandStringFromCharSet(10, acctest.CharSetAlphaNum))
 
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		IDRefreshName:     "kubernetes_cluster_role_binding.test",
 		IDRefreshIgnore:   []string{"metadata.0.resource_version"},
@@ -194,7 +194,7 @@ func TestAccKubernetesClusterRoleBinding_group_subject(t *testing.T) {
 	var conf api.ClusterRoleBinding
 	name := fmt.Sprintf("tf-acc-test:%s", acctest.RandStringFromCharSet(10, acctest.CharSetAlphaNum))
 	resourceName := "kubernetes_cluster_role_binding.test"
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		IDRefreshName:     "kubernetes_cluster_role_binding.test",
 		IDRefreshIgnore:   []string{"metadata.0.resource_version"},
@@ -232,7 +232,7 @@ func TestAccKubernetesClusterRoleBinding_UpdatePatchOperationsOrderWithRemovals(
 	var conf api.ClusterRoleBinding
 	name := fmt.Sprintf("tf-acc-test:%s", acctest.RandStringFromCharSet(10, acctest.CharSetAlphaNum))
 
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		IDRefreshName:     "kubernetes_cluster_role_binding.test",
 		IDRefreshIgnore:   []string{"metadata.0.resource_version"},

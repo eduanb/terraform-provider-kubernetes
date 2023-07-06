@@ -15,7 +15,7 @@ func TestAccKubernetesDataSourceMutatingWebhookConfiguration_basic(t *testing.T)
 	name := fmt.Sprintf("acc-test-%v.terraform.io", acctest.RandString(10))
 	resourceName := "kubernetes_mutating_webhook_configuration_v1.test"
 	dataSourceName := fmt.Sprintf("data.%s", resourceName)
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		ProviderFactories: testAccProviderFactories,
 		Steps: []resource.TestStep{

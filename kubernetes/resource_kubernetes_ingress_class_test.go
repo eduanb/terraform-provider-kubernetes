@@ -21,7 +21,7 @@ func TestAccKubernetesIngressClass_basic(t *testing.T) {
 	rName := acctest.RandomWithPrefix("tf-acc-test")
 	resourceName := "kubernetes_ingress_class.test"
 
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		IDRefreshName:     resourceName,
 		IDRefreshIgnore:   []string{"metadata.0.resource_version"},
@@ -54,7 +54,7 @@ func TestAccKubernetesIngressClass_parameters(t *testing.T) {
 	rNameUpdated := acctest.RandomWithPrefix("tf-acc-test")
 	resourceName := "kubernetes_ingress_class.test"
 
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		IDRefreshName:     resourceName,
 		IDRefreshIgnore:   []string{"metadata.0.resource_version"},
@@ -102,7 +102,7 @@ func TestAccKubernetesIngressClass_parameters_apiGroup(t *testing.T) {
 	rNameUpdated := acctest.RandomWithPrefix("tf-acc-test")
 	resourceName := "kubernetes_ingress_class.test"
 
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		IDRefreshName:     resourceName,
 		IDRefreshIgnore:   []string{"metadata.0.resource_version"},

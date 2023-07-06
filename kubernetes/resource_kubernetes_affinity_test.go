@@ -18,7 +18,7 @@ func TestAccKubernetesPod_with_node_affinity_with_required_during_scheduling_ign
 	imageName := nginxImageVersion
 	keyName := "spec.0.affinity.0.node_affinity.0.required_during_scheduling_ignored_during_execution"
 
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		ProviderFactories: testAccProviderFactories,
 		CheckDestroy:      testAccCheckKubernetesPodDestroy,
@@ -51,7 +51,7 @@ func TestAccKubernetesPod_with_node_affinity_with_preferred_during_scheduling_ig
 	imageName := nginxImageVersion
 	keyName := "spec.0.affinity.0.node_affinity.0.preferred_during_scheduling_ignored_during_execution"
 
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		ProviderFactories: testAccProviderFactories,
 		CheckDestroy:      testAccCheckKubernetesPodDestroy,
@@ -88,7 +88,7 @@ func TestAccKubernetesPod_with_pod_affinity_with_required_during_scheduling_igno
 	imageName := nginxImageVersion
 	keyName := "spec.0.affinity.0.pod_affinity.0.required_during_scheduling_ignored_during_execution"
 
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		ProviderFactories: testAccProviderFactories,
 		CheckDestroy:      testAccCheckKubernetesPodDestroy,
@@ -122,7 +122,7 @@ func TestAccKubernetesPod_with_pod_affinity_with_preferred_during_scheduling_ign
 	imageName := nginxImageVersion
 	keyName := "spec.0.affinity.0.pod_affinity.0.preferred_during_scheduling_ignored_during_execution"
 
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		ProviderFactories: testAccProviderFactories,
 		CheckDestroy:      testAccCheckKubernetesPodDestroy,
@@ -159,7 +159,7 @@ func TestAccKubernetesPod_with_pod_anti_affinity_with_required_during_scheduling
 	imageName := nginxImageVersion
 	keyName := "spec.0.affinity.0.pod_anti_affinity.0.required_during_scheduling_ignored_during_execution"
 
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t); skipIfRunningInMinikube(t) },
 		ProviderFactories: testAccProviderFactories,
 		CheckDestroy:      testAccCheckKubernetesPodDestroy,
@@ -193,7 +193,7 @@ func TestAccKubernetesPod_with_pod_anti_affinity_with_preferred_during_schedulin
 	imageName := nginxImageVersion
 	keyName := "spec.0.affinity.0.pod_anti_affinity.0.preferred_during_scheduling_ignored_during_execution"
 
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t); skipIfRunningInMinikube(t) },
 		ProviderFactories: testAccProviderFactories,
 		CheckDestroy:      testAccCheckKubernetesPodDestroy,

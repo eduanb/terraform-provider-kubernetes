@@ -23,7 +23,7 @@ func TestAccKubernetesPersistentVolumeClaim_basic(t *testing.T) {
 	var conf api.PersistentVolumeClaim
 	name := fmt.Sprintf("tf-acc-test-%s", acctest.RandString(10))
 
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		IDRefreshName:     "kubernetes_persistent_volume_claim.test",
 		IDRefreshIgnore:   []string{"metadata.0.resource_version"},
@@ -138,7 +138,7 @@ func TestAccKubernetesPersistentVolumeClaim_googleCloud_volumeMatch(t *testing.T
 	diskName := fmt.Sprintf("tf-acc-test-disk-%s", acctest.RandString(10))
 	zone := os.Getenv("GOOGLE_ZONE")
 
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t); skipIfNotRunningInGke(t) },
 		IDRefreshName:     "kubernetes_persistent_volume_claim.test",
 		IDRefreshIgnore:   []string{"metadata.0.resource_version"},
@@ -202,7 +202,7 @@ func TestAccKubernetesPersistentVolumeClaim_googleCloud_volumeMatch(t *testing.T
 //   claimName := fmt.Sprintf("tf-acc-test-%s", acctest.RandString(10))
 //   volumeName := fmt.Sprintf("tf-acc-test-%s", acctest.RandString(10))
 
-//   resource.Test(t, resource.TestCase{
+//   resource.ParallelTest(t, resource.TestCase{
 //     PreCheck:      func() { testAccPreCheck(t) },
 //     IDRefreshName: "kubernetes_persistent_volume_claim.test",
 //     ProviderFactories: testAccProviderFactories,
@@ -237,7 +237,7 @@ func TestAccKubernetesPersistentVolumeClaim_googleCloud_volumeMatch(t *testing.T
 //   claimName := fmt.Sprintf("tf-acc-test-%s", acctest.RandString(10))
 //   volumeName := fmt.Sprintf("tf-acc-test-%s", acctest.RandString(10))
 
-//   resource.Test(t, resource.TestCase{
+//   resource.ParallelTest(t, resource.TestCase{
 //     PreCheck:      func() { testAccPreCheck(t) },
 //     IDRefreshName: "kubernetes_persistent_volume_claim.test",
 //     ProviderFactories: testAccProviderFactories,
@@ -281,7 +281,7 @@ func TestAccKubernetesPersistentVolumeClaim_googleCloud_volumeUpdate(t *testing.
 	diskName := fmt.Sprintf("tf-acc-test-disk-%s", acctest.RandString(10))
 	zone := os.Getenv("GOOGLE_ZONE")
 
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t); skipIfNotRunningInGke(t) },
 		IDRefreshName:     "kubernetes_persistent_volume_claim.test",
 		IDRefreshIgnore:   []string{"metadata.0.resource_version"},
@@ -341,7 +341,7 @@ func TestAccKubernetesPersistentVolumeClaim_googleCloud_storageClass(t *testing.
 	className := fmt.Sprintf("tf-acc-test-%s", acctest.RandString(10))
 	claimName := fmt.Sprintf("tf-acc-test-%s", acctest.RandString(10))
 
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t); skipIfNotRunningInGke(t) },
 		IDRefreshName:     "kubernetes_persistent_volume_claim.test",
 		IDRefreshIgnore:   []string{"metadata.0.resource_version"},
@@ -404,7 +404,7 @@ func TestAccKubernetesPersistentVolumeClaim_expansionGoogleCloud(t *testing.T) {
 	name := fmt.Sprintf("tf-acc-test-%s", acctest.RandString(10))
 	imageName := alpineImageVersion
 
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t); skipIfNotRunningInGke(t) },
 		IDRefreshName:     "kubernetes_persistent_volume_claim.test",
 		IDRefreshIgnore:   []string{"metadata.0.resource_version"},
@@ -445,7 +445,7 @@ func TestAccKubernetesPersistentVolumeClaim_expansionMinikube(t *testing.T) {
 	var conf1, conf2 api.PersistentVolumeClaim
 	name := fmt.Sprintf("tf-acc-test-%s", acctest.RandString(10))
 
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t); skipIfNotRunningInMinikube(t) },
 		IDRefreshName:     "kubernetes_persistent_volume_claim.test",
 		IDRefreshIgnore:   []string{"metadata.0.resource_version"},

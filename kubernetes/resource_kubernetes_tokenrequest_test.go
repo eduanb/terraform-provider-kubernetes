@@ -15,7 +15,7 @@ func TestAccKubernetesTokenRequest_basic(t *testing.T) {
 	var conf api.ServiceAccount
 	resourceName := "kubernetes_service_account_v1.tokentest"
 	tokenName := "kubernetes_token_request_v1.test"
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		IDRefreshName:     resourceName,
 		IDRefreshIgnore:   []string{"metadata.0.resource_version"},

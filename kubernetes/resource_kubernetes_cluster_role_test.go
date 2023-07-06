@@ -20,7 +20,7 @@ func TestAccKubernetesClusterRole_basic(t *testing.T) {
 	var conf api.ClusterRole
 	resourceName := "kubernetes_cluster_role.test"
 	name := acctest.RandomWithPrefix("tf-acc-test")
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		IDRefreshName:     resourceName,
 		IDRefreshIgnore:   []string{"metadata.0.resource_version"},
@@ -74,7 +74,7 @@ func TestAccKubernetesClusterRole_generatedName(t *testing.T) {
 	prefix := "tf-acc-test-gen:"
 	resourceName := "kubernetes_cluster_role.test"
 
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		IDRefreshName:     "kubernetes_cluster_role.test",
 		IDRefreshIgnore:   []string{"metadata.0.resource_version"},
@@ -101,7 +101,7 @@ func TestAccKubernetesClusterRole_UpdatePatchOperationsOrderWithRemovals(t *test
 	var conf api.ClusterRole
 	resourceName := "kubernetes_cluster_role.test"
 	name := acctest.RandomWithPrefix("tf-acc-test")
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		IDRefreshName:     resourceName,
 		IDRefreshIgnore:   []string{"metadata.0.resource_version"},
@@ -176,7 +176,7 @@ func TestAccKubernetesClusterRole_aggregationRuleBasic(t *testing.T) {
 	var conf api.ClusterRole
 	resourceName := "kubernetes_cluster_role.test"
 	name := acctest.RandomWithPrefix("tf-acc-test")
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		IDRefreshName:     resourceName,
 		IDRefreshIgnore:   []string{"metadata.0.resource_version"},
@@ -221,7 +221,7 @@ func TestAccKubernetesClusterRole_aggregationRuleMultiple(t *testing.T) {
 	var conf api.ClusterRole
 	resourceName := "kubernetes_cluster_role.test"
 	name := acctest.RandomWithPrefix("tf-acc-test")
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		IDRefreshName:     resourceName,
 		IDRefreshIgnore:   []string{"metadata.0.resource_version"},
@@ -262,7 +262,7 @@ func TestAccKubernetesClusterRole_aggregationRuleRuleAggregation(t *testing.T) {
 	var conf api.ClusterRole
 	resourceName := "kubernetes_cluster_role.test"
 	name := acctest.RandomWithPrefix("tf-acc-test")
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		IDRefreshName:     resourceName,
 		IDRefreshIgnore:   []string{"metadata.0.resource_version"},

@@ -20,7 +20,7 @@ func TestAccKubernetesJob_wait_for_completion(t *testing.T) {
 	var conf api.Job
 	name := fmt.Sprintf("tf-acc-test-%s", acctest.RandStringFromCharSet(10, acctest.CharSetAlphaNum))
 
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:      func() { testAccPreCheck(t) },
 		IDRefreshName: "kubernetes_job.test",
 		IDRefreshIgnore: []string{
@@ -65,7 +65,7 @@ func TestAccKubernetesJob_basic(t *testing.T) {
 	name := fmt.Sprintf("tf-acc-test-%s", acctest.RandStringFromCharSet(10, acctest.CharSetAlphaNum))
 	imageName := alpineImageVersion
 
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		IDRefreshName:     "kubernetes_job.test",
 		IDRefreshIgnore:   []string{"metadata.0.resource_version"},
@@ -121,7 +121,7 @@ func TestAccKubernetesJob_update(t *testing.T) {
 	imageName := alpineImageVersion
 	imageName1 := busyboxImageVersion
 
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		IDRefreshName:     "kubernetes_job.test",
 		IDRefreshIgnore:   []string{"metadata.0.resource_version"},

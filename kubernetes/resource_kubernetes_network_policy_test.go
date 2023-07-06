@@ -20,7 +20,7 @@ func TestAccKubernetesNetworkPolicy_basic(t *testing.T) {
 	name := fmt.Sprintf("tf-acc-test-%s", acctest.RandString(10))
 	resourceName := "kubernetes_network_policy.test"
 
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		IDRefreshName:     "kubernetes_network_policy.test",
 		IDRefreshIgnore:   []string{"metadata.0.resource_version"},
@@ -268,7 +268,7 @@ func TestAccKubernetesNetworkPolicy_withEgressAtCreation(t *testing.T) {
 	var conf api.NetworkPolicy
 	name := fmt.Sprintf("tf-acc-test-%s", acctest.RandString(10))
 
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		IDRefreshName:     "kubernetes_network_policy.test",
 		IDRefreshIgnore:   []string{"metadata.0.resource_version"},

@@ -21,7 +21,7 @@ func TestAccKubernetesServiceAccount_basic(t *testing.T) {
 	name := fmt.Sprintf("tf-acc-test-%s", acctest.RandStringFromCharSet(10, acctest.CharSetAlphaNum))
 	resourceName := "kubernetes_service_account.test"
 
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		IDRefreshName:     resourceName,
 		IDRefreshIgnore:   []string{"metadata.0.resource_version"},
@@ -72,7 +72,7 @@ func TestAccKubernetesServiceAccount_default_secret(t *testing.T) {
 	name := fmt.Sprintf("tf-acc-test-%s", acctest.RandStringFromCharSet(10, acctest.CharSetAlphaNum))
 	resourceName := "kubernetes_service_account_v1.test"
 
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck: func() {
 			testAccPreCheck(t)
 			skipIfClusterVersionGreaterThanOrEqual(t, "1.24.0")
@@ -104,7 +104,7 @@ func TestAccKubernetesServiceAccount_automount(t *testing.T) {
 	var conf api.ServiceAccount
 	name := fmt.Sprintf("tf-acc-test-%s", acctest.RandStringFromCharSet(10, acctest.CharSetAlphaNum))
 
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		IDRefreshName:     "kubernetes_service_account.test",
 		IDRefreshIgnore:   []string{"metadata.0.resource_version"},
@@ -148,7 +148,7 @@ func TestAccKubernetesServiceAccount_update(t *testing.T) {
 	var conf api.ServiceAccount
 	name := fmt.Sprintf("tf-acc-test-%s", acctest.RandStringFromCharSet(10, acctest.CharSetAlphaNum))
 
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		IDRefreshName:     "kubernetes_service_account.test",
 		IDRefreshIgnore:   []string{"metadata.0.resource_version"},
@@ -239,7 +239,7 @@ func TestAccKubernetesServiceAccount_generatedName(t *testing.T) {
 	var conf api.ServiceAccount
 	prefix := "tf-acc-test-gen-"
 
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		IDRefreshName:     "kubernetes_service_account.test",
 		IDRefreshIgnore:   []string{"metadata.0.resource_version"},

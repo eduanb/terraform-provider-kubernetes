@@ -19,7 +19,7 @@ import (
 func TestAccKubernetesStatefulSet_minimal(t *testing.T) {
 	name := fmt.Sprintf("tf-acc-test-%s", acctest.RandStringFromCharSet(10, acctest.CharSetAlphaNum))
 	imageName := nginxImageVersion
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		IDRefreshName:     "kubernetes_stateful_set.test",
 		IDRefreshIgnore:   []string{"metadata.0.resource_version"},
@@ -42,7 +42,7 @@ func TestAccKubernetesStatefulSet_minimal(t *testing.T) {
 func TestAccKubernetesStatefulSet_basic(t *testing.T) {
 	var conf api.StatefulSet
 	name := fmt.Sprintf("tf-acc-test-%s", acctest.RandStringFromCharSet(10, acctest.CharSetAlphaNum))
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:      func() { testAccPreCheck(t) },
 		IDRefreshName: "kubernetes_stateful_set.test",
 		IDRefreshIgnore: []string{
@@ -115,7 +115,7 @@ func TestAccKubernetesStatefulSet_basic(t *testing.T) {
 func TestAccKubernetesStatefulSet_basic_idempotency(t *testing.T) {
 	var conf api.StatefulSet
 	name := fmt.Sprintf("tf-acc-test-%s", acctest.RandStringFromCharSet(10, acctest.CharSetAlphaNum))
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:      func() { testAccPreCheck(t) },
 		IDRefreshName: "kubernetes_stateful_set.test",
 		IDRefreshIgnore: []string{
@@ -147,7 +147,7 @@ func TestAccKubernetesStatefulSet_basic_idempotency(t *testing.T) {
 func TestAccKubernetesStatefulSet_Update(t *testing.T) {
 	var conf api.StatefulSet
 	name := fmt.Sprintf("tf-acc-test-%s", acctest.RandStringFromCharSet(10, acctest.CharSetAlphaNum))
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:      func() { testAccPreCheck(t) },
 		IDRefreshName: "kubernetes_stateful_set.test",
 		IDRefreshIgnore: []string{
@@ -270,7 +270,7 @@ func TestAccKubernetesStatefulSet_waitForRollout(t *testing.T) {
 	imageName := nginxImageVersion
 	imageName1 := nginxImageVersion1
 	name := fmt.Sprintf("tf-acc-test-%s", acctest.RandStringFromCharSet(10, acctest.CharSetAlphaNum))
-	resource.Test(t, resource.TestCase{
+	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:      func() { testAccPreCheck(t) },
 		IDRefreshName: "kubernetes_stateful_set.test",
 		IDRefreshIgnore: []string{
