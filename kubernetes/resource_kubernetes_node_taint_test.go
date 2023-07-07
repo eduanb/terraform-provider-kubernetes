@@ -26,7 +26,7 @@ const (
 func TestAccKubernetesResourceNodeTaint_basic(t *testing.T) {
 	resourceName := "kubernetes_node_taint.test"
 
-	resource.ParallelTest(t, resource.TestCase{
+	resource.Test(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		IDRefreshName:     resourceName,
 		ProviderFactories: testAccProviderFactories,
@@ -50,7 +50,7 @@ func TestAccKubernetesResourceNodeTaint_basic(t *testing.T) {
 func TestAccKubernetesResourceNodeTaint_MultipleBasic(t *testing.T) {
 	resourceName := "kubernetes_node_taint.test"
 
-	resource.ParallelTest(t, resource.TestCase{
+	resource.Test(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		IDRefreshName:     resourceName,
 		ProviderFactories: testAccProviderFactories,
