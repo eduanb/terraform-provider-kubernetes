@@ -922,91 +922,91 @@ resource "kubernetes_persistent_volume_claim" "test" {
 `, volumeName, diskName, zone, claimName)
 }
 
-// func testAccKubernetesPersistentVolumeClaimConfig_labelsMatch(volumeName, claimName string) string {
-//   return fmt.Sprintf(`// resource "kubernetes_persistent_volume" "test" {
-//   metadata {
-//     labels {
-//       TfAccTestEnvironment = "blablah"
-//     }
-//     name = "%s"
-//   }
-//   spec {
-//     capacity {
-//       storage = "10Gi"
-//     }
-//     access_modes = ["ReadWriteOnce"]
-//     persistent_volume_source {
-//       gce_persistent_disk {
-//         pd_name = "test123"
-//       }
-//     }
-//   }
-// }
+func testAccKubernetesPersistentVolumeClaimConfig_labelsMatch(volumeName, claimName string) string {
+	return fmt.Sprintf(`// resource "kubernetes_persistent_volume" "test" {
+  metadata {
+    labels {
+      TfAccTestEnvironment = "blablah"
+    }
+    name = "%s"
+  }
+  spec {
+    capacity {
+      storage = "10Gi"
+    }
+    access_modes = ["ReadWriteOnce"]
+    persistent_volume_source {
+      gce_persistent_disk {
+        pd_name = "test123"
+      }
+    }
+  }
+}
 
-// resource "kubernetes_persistent_volume_claim" "test" {
-//   metadata {
-//     name = "%s"
-//   }
-//   spec {
-//     access_modes = ["ReadWriteOnce"]
-//     resources {
-//       requests {
-//         storage = "5Gi"
-//       }
-//     }
-//     selector {
-//       match_labels {
-//         TfAccTestEnvironment = "blablah"
-//       }
-//     }
-//   }
-// }
-// `, volumeName, claimName)
-// }
+resource "kubernetes_persistent_volume_claim" "test" {
+  metadata {
+    name = "%s"
+  }
+  spec {
+    access_modes = ["ReadWriteOnce"]
+    resources {
+      requests {
+        storage = "5Gi"
+      }
+    }
+    selector {
+      match_labels {
+        TfAccTestEnvironment = "blablah"
+      }
+    }
+  }
+}
+`, volumeName, claimName)
+}
 
-// func testAccKubernetesPersistentVolumeClaimConfig_labelsMatchExpression(volumeName, claimName string) string {
-//   return fmt.Sprintf(`// resource "kubernetes_persistent_volume" "test" {
-//   metadata {
-//     labels {
-//       TfAccTestEnvironment = "two"
-//     }
-//     name = "%s"
-//   }
-//   spec {
-//     capacity {
-//       storage = "10Gi"
-//     }
-//     access_modes = ["ReadWriteOnce"]
-//     persistent_volume_source {
-//       gce_persistent_disk {
-//         pd_name = "test123"
-//       }
-//     }
-//   }
-// }
+func testAccKubernetesPersistentVolumeClaimConfig_labelsMatchExpression(volumeName, claimName string) string {
+	return fmt.Sprintf(`// resource "kubernetes_persistent_volume" "test" {
+  metadata {
+    labels {
+      TfAccTestEnvironment = "two"
+    }
+    name = "%s"
+  }
+  spec {
+    capacity {
+      storage = "10Gi"
+    }
+    access_modes = ["ReadWriteOnce"]
+    persistent_volume_source {
+      gce_persistent_disk {
+        pd_name = "test123"
+      }
+    }
+  }
+}
 
-// resource "kubernetes_persistent_volume_claim" "test" {
-//   metadata {
-//     name = "%s"
-//   }
-//   spec {
-//     access_modes = ["ReadWriteOnce"]
-//     resources {
-//       requests {
-//         storage = "5Gi"
-//       }
-//     }
-//     selector {
-//       match_expressions {
-//         key = "TfAccTestEnvironment"
-//         operator = "In"
-//         values = ["one", "three", "two"]
-//       }
-//     }
-//   }
-// }
-// `, volumeName, claimName)
-// }
+resource "kubernetes_persistent_volume_claim" "test" {
+  metadata {
+    name = "%s"
+  }
+  spec {
+    access_modes = ["ReadWriteOnce"]
+    resources {
+      requests {
+        storage = "5Gi"
+      }
+    }
+    selector {
+      match_expressions {
+        key = "TfAccTestEnvironment"
+        operator = "In"
+        values = ["one", "three", "two"]
+      }
+    }
+  }
+}
+`, volumeName, claimName)
+}
 
 func testAccKubernetesPersistentVolumeClaimConfig_volumeUpdate(volumeName, claimName, storage, diskName, zone string) string {
 	return fmt.Sprintf(`resource "kubernetes_persistent_volume" "test" {
