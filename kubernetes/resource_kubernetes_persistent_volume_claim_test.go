@@ -965,7 +965,7 @@ resource "kubernetes_persistent_volume_claim" "test" {
 }
 
 func testAccKubernetesPersistentVolumeClaimConfig_labelsMatchExpression(volumeName, claimName string) string {
-	return fmt.Sprintf(`// resource "kubernetes_persistent_volume" "test" {
+	return fmt.Sprintf(`resource "kubernetes_persistent_volume" "test" {
   metadata {
     labels {
       TfAccTestEnvironment = "two"
