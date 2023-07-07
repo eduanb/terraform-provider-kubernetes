@@ -29,6 +29,8 @@ const (
 	busyboxImageVersion  = "busybox:1.32.0"
 	busyboxImageVersion1 = "busybox:1.31"
 	alpineImageVersion   = "alpine:3.12.1"
+	alpineImage          = "alpine:3.18.2"
+	bbImage              = "busybox:1.36.1"
 )
 
 var testAccProvider *schema.Provider

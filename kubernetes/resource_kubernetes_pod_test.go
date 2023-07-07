@@ -56,9 +56,9 @@ func TestAccKubernetesPod_basic(t *testing.T) {
 	podName := acctest.RandomWithPrefix("tf-acc-test")
 	secretName := acctest.RandomWithPrefix("tf-acc-test")
 	configMapName := acctest.RandomWithPrefix("tf-acc-test")
-
-	imageName1 := nginxImageVersion
 	resourceName := fmt.Sprintf("kubernetes_pod.%s", podName)
+
+	image := alpineImage
 
 	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
@@ -66,7 +66,7 @@ func TestAccKubernetesPod_basic(t *testing.T) {
 		CheckDestroy:      testAccCheckKubernetesPodDestroy,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccKubernetesPodConfigBasic(secretName, configMapName, podName, imageName1),
+				Config: testAccKubernetesPodConfigBasic(secretName, configMapName, podName, image),
 				Check: resource.ComposeAggregateTestCheckFunc(
 					testAccCheckKubernetesPodExists(resourceName, &conf1),
 					resource.TestCheckResourceAttr(resourceName, "metadata.0.annotations.%", "0"),
@@ -91,7 +91,7 @@ func TestAccKubernetesPod_basic(t *testing.T) {
 					resource.TestCheckResourceAttr(resourceName, "spec.0.container.0.env_from.1.secret_ref.0.name", fmt.Sprintf("%s-from", secretName)),
 					resource.TestCheckResourceAttr(resourceName, "spec.0.container.0.env_from.1.secret_ref.0.optional", "false"),
 					resource.TestCheckResourceAttr(resourceName, "spec.0.container.0.env_from.1.prefix", "FROM_S_"),
-					resource.TestCheckResourceAttr(resourceName, "spec.0.container.0.image", imageName1),
+					resource.TestCheckResourceAttr(resourceName, "spec.0.container.0.image", image),
 					resource.TestCheckResourceAttr(resourceName, "spec.0.topology_spread_constraint.#", "0"),
 				),
 			},
@@ -110,7 +110,7 @@ func TestAccKubernetesPod_scheduler(t *testing.T) {
 
 	podName := acctest.RandomWithPrefix("tf-acc-test")
 	schedulerName := acctest.RandomWithPrefix("test-scheduler")
-	imageName := nginxImageVersion
+	imageName := alpineImage
 	resourceName := fmt.Sprintf("kubernetes_pod_v1.%s", podName)
 
 	resource.ParallelTest(t, resource.TestCase{
@@ -242,70 +242,70 @@ func TestAccKubernetesPod_updateArgsForceNew(t *testing.T) {
 	})
 }
 
-// func TestAccKubernetesPod_updateEnvForceNew(t *testing.T) {
-// 	var conf1 api.Pod
-// 	var conf2 api.Pod
+func TestAccKubernetesPod_updateEnvForceNew(t *testing.T) {
+	var conf1 api.Pod
+	var conf2 api.Pod
 
-// 	podName := acctest.RandomWithPrefix("tf-acc-test")
+	podName := acctest.RandomWithPrefix("tf-acc-test")
 
-// 	imageName := "hashicorp/http-echo:latest"
-// 	envBefore := "bar"
-// 	envAfter := "baz"
-// 	resourceName := fmt.Sprintf("kubernetes_pod.%s", podName)
+	imageName := "hashicorp/http-echo:latest"
+	envBefore := "bar"
+	envAfter := "baz"
+	resourceName := fmt.Sprintf("kubernetes_pod.%s", podName)
 
-// 	resource.ParallelTest(t, resource.TestCase{
-// 		PreCheck:          func() { testAccPreCheck(t) },
-// 		ProviderFactories: testAccProviderFactories,
-// 		CheckDestroy:      testAccCheckKubernetesPodDestroy,
-// 		Steps: []resource.TestStep{
-// 			{
-// 				Config: testAccKubernetesPodConfigEnvUpdate(podName, imageName, envBefore),
-// 				Check: resource.ComposeAggregateTestCheckFunc(
-// 					testAccCheckKubernetesPodExists(resourceName, &conf1),
-// 					resource.TestCheckResourceAttr(resourceName, "metadata.0.annotations.%", "0"),
-// 					resource.TestCheckResourceAttr(resourceName, "metadata.0.name", podName),
-// 					resource.TestCheckResourceAttrSet(resourceName, "metadata.0.generation"),
-// 					resource.TestCheckResourceAttrSet(resourceName, "metadata.0.resource_version"),
-// 					resource.TestCheckResourceAttrSet(resourceName, "metadata.0.uid"),
-// 					resource.TestCheckResourceAttr(resourceName, "spec.0.container.0.image", imageName),
-// 					resource.TestCheckResourceAttr(resourceName, "spec.0.container.0.env.#", "1"),
-// 					resource.TestCheckResourceAttr(resourceName, "spec.0.container.0.env.0.name", "foo"),
-// 					resource.TestCheckResourceAttr(resourceName, "spec.0.container.0.env.0.value", "bar"),
-// 					resource.TestCheckResourceAttr(resourceName, "spec.0.container.0.name", "containername"),
-// 				),
-// 			},
-// 			{
-// 				ResourceName:            resourceName,
-// 				ImportState:             true,
-// 				ImportStateVerify:       true,
-// 				ImportStateVerifyIgnore: []string{"metadata.0.resource_version"},
-// 			},
-// 			{
-// 				Config: testAccKubernetesPodConfigEnvUpdate(podName, imageName, envAfter),
-// 				Check: resource.ComposeAggregateTestCheckFunc(
-// 					testAccCheckKubernetesPodExists(resourceName, &conf2),
-// 					resource.TestCheckResourceAttr(resourceName, "metadata.0.annotations.%", "0"),
-// 					resource.TestCheckResourceAttr(resourceName, "metadata.0.name", podName),
-// 					resource.TestCheckResourceAttrSet(resourceName, "metadata.0.generation"),
-// 					resource.TestCheckResourceAttrSet(resourceName, "metadata.0.resource_version"),
-// 					resource.TestCheckResourceAttrSet(resourceName, "metadata.0.uid"),
-// 					resource.TestCheckResourceAttr(resourceName, "spec.0.container.0.image", imageName),
-// 					resource.TestCheckResourceAttr(resourceName, "spec.0.container.0.env.#", "1"),
-// 					resource.TestCheckResourceAttr(resourceName, "spec.0.container.0.env.0.name", "foo"),
-// 					resource.TestCheckResourceAttr(resourceName, "spec.0.container.0.env.0.value", "baz"),
-// 					resource.TestCheckResourceAttr(resourceName, "spec.0.container.0.name", "containername"),
-// 					testAccCheckKubernetesPodForceNew(&conf1, &conf2, true),
-// 				),
-// 			},
-// 		},
-// 	})
-// }
+	resource.ParallelTest(t, resource.TestCase{
+		PreCheck:          func() { testAccPreCheck(t) },
+		ProviderFactories: testAccProviderFactories,
+		CheckDestroy:      testAccCheckKubernetesPodDestroy,
+		Steps: []resource.TestStep{
+			{
+				Config: testAccKubernetesPodConfigEnvUpdate(podName, imageName, envBefore),
+				Check: resource.ComposeAggregateTestCheckFunc(
+					testAccCheckKubernetesPodExists(resourceName, &conf1),
+					resource.TestCheckResourceAttr(resourceName, "metadata.0.annotations.%", "0"),
+					resource.TestCheckResourceAttr(resourceName, "metadata.0.name", podName),
+					resource.TestCheckResourceAttrSet(resourceName, "metadata.0.generation"),
+					resource.TestCheckResourceAttrSet(resourceName, "metadata.0.resource_version"),
+					resource.TestCheckResourceAttrSet(resourceName, "metadata.0.uid"),
+					resource.TestCheckResourceAttr(resourceName, "spec.0.container.0.image", imageName),
+					resource.TestCheckResourceAttr(resourceName, "spec.0.container.0.env.#", "1"),
+					resource.TestCheckResourceAttr(resourceName, "spec.0.container.0.env.0.name", "foo"),
+					resource.TestCheckResourceAttr(resourceName, "spec.0.container.0.env.0.value", "bar"),
+					resource.TestCheckResourceAttr(resourceName, "spec.0.container.0.name", "containername"),
+				),
+			},
+			{
+				ResourceName:            resourceName,
+				ImportState:             true,
+				ImportStateVerify:       true,
+				ImportStateVerifyIgnore: []string{"metadata.0.resource_version"},
+			},
+			{
+				Config: testAccKubernetesPodConfigEnvUpdate(podName, imageName, envAfter),
+				Check: resource.ComposeAggregateTestCheckFunc(
+					testAccCheckKubernetesPodExists(resourceName, &conf2),
+					resource.TestCheckResourceAttr(resourceName, "metadata.0.annotations.%", "0"),
+					resource.TestCheckResourceAttr(resourceName, "metadata.0.name", podName),
+					resource.TestCheckResourceAttrSet(resourceName, "metadata.0.generation"),
+					resource.TestCheckResourceAttrSet(resourceName, "metadata.0.resource_version"),
+					resource.TestCheckResourceAttrSet(resourceName, "metadata.0.uid"),
+					resource.TestCheckResourceAttr(resourceName, "spec.0.container.0.image", imageName),
+					resource.TestCheckResourceAttr(resourceName, "spec.0.container.0.env.#", "1"),
+					resource.TestCheckResourceAttr(resourceName, "spec.0.container.0.env.0.name", "foo"),
+					resource.TestCheckResourceAttr(resourceName, "spec.0.container.0.env.0.value", "baz"),
+					resource.TestCheckResourceAttr(resourceName, "spec.0.container.0.name", "containername"),
+					testAccCheckKubernetesPodForceNew(&conf1, &conf2, true),
+				),
+			},
+		},
+	})
+}
 
 func TestAccKubernetesPod_with_pod_security_context(t *testing.T) {
 	var conf api.Pod
 
 	podName := acctest.RandomWithPrefix("tf-acc-test")
-	imageName := nginxImageVersion
+	imageName := alpineImage
 	resourceName := fmt.Sprintf("kubernetes_pod.%s", podName)
 
 	resource.ParallelTest(t, resource.TestCase{
@@ -338,7 +338,7 @@ func TestAccKubernetesPod_with_pod_security_context_fs_group_change_policy(t *te
 	var conf api.Pod
 
 	podName := acctest.RandomWithPrefix("tf-acc-test")
-	imageName := nginxImageVersion
+	imageName := alpineImage
 	resourceName := fmt.Sprintf("kubernetes_pod.%s", podName)
 
 	resource.ParallelTest(t, resource.TestCase{
@@ -396,7 +396,7 @@ func TestAccKubernetesPod_with_pod_security_context_run_as_group(t *testing.T) {
 	var conf api.Pod
 
 	podName := acctest.RandomWithPrefix("tf-acc-test")
-	imageName := nginxImageVersion
+	imageName := alpineImage
 	resourceName := fmt.Sprintf("kubernetes_pod.%s", podName)
 
 	resource.ParallelTest(t, resource.TestCase{
@@ -430,7 +430,7 @@ func TestAccKubernetesPod_with_pod_security_context_seccomp_profile(t *testing.T
 	var conf api.Pod
 
 	podName := acctest.RandomWithPrefix("tf-acc-test")
-	imageName := nginxImageVersion
+	imageName := alpineImage
 	resourceName := fmt.Sprintf("kubernetes_pod.%s", podName)
 
 	resource.ParallelTest(t, resource.TestCase{
@@ -468,7 +468,7 @@ func TestAccKubernetesPod_with_pod_security_context_seccomp_localhost_profile(t 
 	var conf api.Pod
 
 	podName := acctest.RandomWithPrefix("tf-acc-test")
-	imageName := nginxImageVersion
+	imageName := alpineImage
 	resourceName := fmt.Sprintf("kubernetes_pod.%s", podName)
 
 	resource.ParallelTest(t, resource.TestCase{
@@ -679,7 +679,7 @@ func TestAccKubernetesPod_with_container_security_context(t *testing.T) {
 	var conf api.Pod
 
 	podName := acctest.RandomWithPrefix("tf-acc-test")
-	imageName := nginxImageVersion
+	imageName := alpineImage
 	resourceName := fmt.Sprintf("kubernetes_pod.%s", podName)
 
 	resource.ParallelTest(t, resource.TestCase{
@@ -718,7 +718,7 @@ func TestAccKubernetesPod_with_volume_mount(t *testing.T) {
 	podName := acctest.RandomWithPrefix("tf-acc-test")
 	secretName := acctest.RandomWithPrefix("tf-acc-test")
 
-	imageName := nginxImageVersion
+	imageName := alpineImage
 	resourceName := fmt.Sprintf("kubernetes_pod.%s", podName)
 
 	resource.ParallelTest(t, resource.TestCase{
@@ -888,7 +888,7 @@ func TestAccKubernetesPod_with_resource_requirements(t *testing.T) {
 	var conf api.Pod
 
 	podName := acctest.RandomWithPrefix("tf-acc-test")
-	imageName := nginxImageVersion
+	imageName := alpineImage
 	resourceName := fmt.Sprintf("kubernetes_pod.%s", podName)
 
 	resource.ParallelTest(t, resource.TestCase{
@@ -952,7 +952,7 @@ func TestAccKubernetesPod_with_empty_dir_volume(t *testing.T) {
 	var conf api.Pod
 
 	podName := acctest.RandomWithPrefix("tf-acc-test")
-	imageName := nginxImageVersion
+	imageName := alpineImage
 	resourceName := fmt.Sprintf("kubernetes_pod.%s", podName)
 
 	resource.ParallelTest(t, resource.TestCase{
@@ -985,7 +985,7 @@ func TestAccKubernetesPod_with_empty_dir_volume_with_sizeLimit(t *testing.T) {
 	var conf api.Pod
 
 	podName := acctest.RandomWithPrefix("tf-acc-test")
-	imageName := nginxImageVersion
+	imageName := alpineImage
 	resourceName := fmt.Sprintf("kubernetes_pod.%s", podName)
 
 	resource.ParallelTest(t, resource.TestCase{
@@ -1020,7 +1020,7 @@ func TestAccKubernetesPod_with_secret_vol_items(t *testing.T) {
 
 	secretName := acctest.RandomWithPrefix("tf-acc-test")
 	podName := acctest.RandomWithPrefix("tf-acc-test")
-	imageName := nginxImageVersion
+	imageName := alpineImage
 	resourceName := fmt.Sprintf("kubernetes_pod.%s", podName)
 
 	resource.ParallelTest(t, resource.TestCase{
@@ -1052,7 +1052,7 @@ func TestAccKubernetesPod_gke_with_nodeSelector(t *testing.T) {
 	var conf api.Pod
 
 	podName := acctest.RandomWithPrefix("tf-acc-test")
-	imageName := nginxImageVersion
+	imageName := alpineImage
 	region := os.Getenv("GOOGLE_REGION")
 	resourceName := fmt.Sprintf("kubernetes_pod.%s", podName)
 
@@ -1086,7 +1086,7 @@ func TestAccKubernetesPod_config_with_automount_service_account_token(t *testing
 
 	podName := acctest.RandomWithPrefix("tf-acc-test")
 	saName := acctest.RandomWithPrefix("tf-acc-test")
-	imageName := nginxImageVersion
+	imageName := alpineImage
 	resourceName := fmt.Sprintf("kubernetes_pod.%s", podName)
 
 	resource.ParallelTest(t, resource.TestCase{
@@ -1116,7 +1116,7 @@ func TestAccKubernetesPod_config_container_working_dir(t *testing.T) {
 	var confPod api.Pod
 
 	podName := acctest.RandomWithPrefix("tf-acc-test")
-	imageName := nginxImageVersion
+	imageName := alpineImage
 	resourceName := fmt.Sprintf("kubernetes_pod.%s", podName)
 
 	resource.ParallelTest(t, resource.TestCase{
@@ -1154,7 +1154,7 @@ func TestAccKubernetesPod_config_container_startup_probe(t *testing.T) {
 	var confPod api.Pod
 
 	podName := acctest.RandomWithPrefix("tf-acc-test")
-	imageName := nginxImageVersion
+	imageName := alpineImage
 	resourceName := fmt.Sprintf("kubernetes_pod.%s", podName)
 
 	resource.ParallelTest(t, resource.TestCase{
@@ -1190,7 +1190,7 @@ func TestAccKubernetesPod_termination_message_policy_default(t *testing.T) {
 	var confPod api.Pod
 
 	podName := fmt.Sprintf("tf-acc-test-%s", acctest.RandStringFromCharSet(10, acctest.CharSetAlphaNum))
-	imageName := nginxImageVersion
+	imageName := alpineImage
 	resourceName := fmt.Sprintf("kubernetes_pod.%s", podName)
 
 	resource.ParallelTest(t, resource.TestCase{
@@ -1221,7 +1221,7 @@ func TestAccKubernetesPod_termination_message_policy_override_as_file(t *testing
 	var confPod api.Pod
 
 	podName := fmt.Sprintf("tf-acc-test-%s", acctest.RandStringFromCharSet(10, acctest.CharSetAlphaNum))
-	imageName := nginxImageVersion
+	imageName := alpineImage
 	resourceName := fmt.Sprintf("kubernetes_pod.%s", podName)
 
 	resource.ParallelTest(t, resource.TestCase{
@@ -1252,7 +1252,7 @@ func TestAccKubernetesPod_termination_message_policy_override_as_fallback_to_log
 	var confPod api.Pod
 
 	podName := fmt.Sprintf("tf-acc-test-%s", acctest.RandStringFromCharSet(10, acctest.CharSetAlphaNum))
-	imageName := nginxImageVersion
+	imageName := alpineImage
 	resourceName := fmt.Sprintf("kubernetes_pod.%s", podName)
 
 	resource.ParallelTest(t, resource.TestCase{
@@ -1283,7 +1283,7 @@ func TestAccKubernetesPod_enableServiceLinks(t *testing.T) {
 	var conf1 api.Pod
 
 	rName := acctest.RandomWithPrefix("tf-acc-test")
-	imageName := nginxImageVersion
+	imageName := alpineImage
 	resourceName := fmt.Sprintf("kubernetes_pod.%s", rName)
 
 	resource.ParallelTest(t, resource.TestCase{
