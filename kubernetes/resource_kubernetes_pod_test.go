@@ -1677,7 +1677,7 @@ resource "kubernetes_config_map" "test_from" {
   }
 }
 
-resource "kubernetes_pod" "test" {
+resource "kubernetes_pod" "%[3]s" {
   metadata {
     labels = {
       app = "pod_label"
@@ -1743,19 +1743,19 @@ resource "kubernetes_pod" "test" {
 }
 
 func testAccKubernetesPodConfigScheduler(podName, schedulerName, imageName string) string {
-	return fmt.Sprintf(`resource "kubernetes_pod_v1" "test" {
+	return fmt.Sprintf(`resource "kubernetes_pod_v1" "%[1]s" {
   metadata {
     labels = {
       app = "pod_label"
     }
-    name = "%s"
+    name = %[1]q
   }
 
   spec {
     automount_service_account_token = false
-    scheduler_name                  = %q
+    scheduler_name                  = %[2]q
     container {
-      image = "%s"
+      image = %[3]q
       name  = "containername"
     }
   }
