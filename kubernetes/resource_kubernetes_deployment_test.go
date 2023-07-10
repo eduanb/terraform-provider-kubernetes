@@ -2162,16 +2162,17 @@ func testAccKubernetesDeploymentConfigWithContainerSecurityContextSeccompProfile
       }
 
       spec {
+        automount_service_account_token = false
         security_context {
           seccomp_profile {
             type              = "Localhost"
             localhost_profile = "profiles/audit.json"
           }
         }
-        container {
-          image = "%s"
-          name  = "containername"
 
+        container {
+          image = "%[2]s"
+          name  = "containername"
           security_context {
             seccomp_profile {
               type              = "Localhost"
@@ -2181,6 +2182,10 @@ func testAccKubernetesDeploymentConfigWithContainerSecurityContextSeccompProfile
         }
       }
     }
+  }
+
+  timeouts {
+    create = "30s"
   }
 }
 `, deploymentName, imageName)

@@ -1906,6 +1906,10 @@ func testAccKubernetesPodConfigWithSecurityContextSeccompProfileLocalhost(podNam
       }
     }
   }
+
+  timeouts {
+	create = "15s"
+  }
 }
 `, podName, imageName)
 }
