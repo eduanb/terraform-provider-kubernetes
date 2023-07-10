@@ -2031,6 +2031,10 @@ func testAccKubernetesDeploymentConfigWithContainerSecurityContext(deploymentNam
       }
     }
   }
+
+  timeouts {
+    create = "30s"
+  }
 }
 `, deploymentName, imageName)
 }

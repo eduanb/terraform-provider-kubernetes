@@ -311,7 +311,6 @@ func TestAccKubernetesReplicationController_with_container_liveness_probe_using_
 
 	rcName := fmt.Sprintf("tf-acc-test-%s", acctest.RandStringFromCharSet(10, acctest.CharSetAlphaNum))
 	imageName := "registry.k8s.io/e2e-test-images/agnhost:2.40"
-
 	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		ProviderFactories: testAccProviderFactories,

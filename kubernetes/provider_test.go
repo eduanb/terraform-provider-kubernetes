@@ -31,6 +31,7 @@ const (
 	alpineImageVersion   = "alpine:3.12.1"
 	alpineImage          = "alpine:3.18.2"
 	bbImage              = "busybox:1.36.1"
+	agnhostImage         = "registry.k8s.io/e2e-test-images/agnhost:2.40"
 )
 
 var testAccProvider *schema.Provider
