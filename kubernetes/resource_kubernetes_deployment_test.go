@@ -1969,7 +1969,7 @@ func testAccKubernetesDeploymentConfigWithLifeCycle(deploymentName, imageName st
 func testAccKubernetesDeploymentConfigWithContainerSecurityContext(deploymentName, imageName string) string {
 	return fmt.Sprintf(`resource "kubernetes_deployment" "test" {
   metadata {
-    name = "%s"
+    name = "%[1]s"
 
     labels = {
       Test = "TfAcceptanceTest"
@@ -1992,7 +1992,7 @@ func testAccKubernetesDeploymentConfigWithContainerSecurityContext(deploymentNam
 
       spec {
         container {
-          image = "%s"
+          image = "%[2]s"
           name  = "containername"
 
           security_context {
