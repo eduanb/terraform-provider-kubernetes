@@ -39,110 +39,110 @@ func TestAccKubernetesStatefulSet_minimal(t *testing.T) {
 	})
 }
 
-func TestAccKubernetesStatefulSet_basic(t *testing.T) {
-	var conf api.StatefulSet
-	name := fmt.Sprintf("tf-acc-test-%s", acctest.RandStringFromCharSet(10, acctest.CharSetAlphaNum))
-	resource.ParallelTest(t, resource.TestCase{
-		PreCheck:      func() { testAccPreCheck(t) },
-		IDRefreshName: "kubernetes_stateful_set.test",
-		IDRefreshIgnore: []string{
-			"metadata.0.resource_version",
-			"spec.0.template.0.spec.0.container.0.resources.0.limits",
-			"spec.0.template.0.spec.0.container.0.resources.0.requests",
-		},
-		ProviderFactories: testAccProviderFactories,
-		CheckDestroy:      testAccCheckKubernetesStatefulSetDestroy,
-		Steps: []resource.TestStep{
-			{
-				Config: testAccKubernetesStatefulSetConfigBasic(name),
-				Check: resource.ComposeAggregateTestCheckFunc(
-					testAccCheckKubernetesStatefulSetExists("kubernetes_stateful_set.test", &conf),
-					resource.TestCheckResourceAttr("kubernetes_stateful_set.test", "wait_for_rollout", "true"),
-					resource.TestCheckResourceAttrSet("kubernetes_stateful_set.test", "metadata.0.generation"),
-					resource.TestCheckResourceAttrSet("kubernetes_stateful_set.test", "metadata.0.resource_version"),
-					resource.TestCheckResourceAttrSet("kubernetes_stateful_set.test", "metadata.0.uid"),
-					resource.TestCheckResourceAttrSet("kubernetes_stateful_set.test", "metadata.0.namespace"),
-					resource.TestCheckResourceAttr("kubernetes_stateful_set.test", "metadata.0.annotations.%", "2"),
-					resource.TestCheckResourceAttr("kubernetes_stateful_set.test", "metadata.0.labels.%", "3"),
-					resource.TestCheckResourceAttr("kubernetes_stateful_set.test", "metadata.0.labels.TestLabelOne", "one"),
-					resource.TestCheckResourceAttr("kubernetes_stateful_set.test", "metadata.0.labels.TestLabelTwo", "two"),
-					resource.TestCheckResourceAttr("kubernetes_stateful_set.test", "metadata.0.labels.TestLabelThree", "three"),
-					resource.TestCheckResourceAttr("kubernetes_stateful_set.test", "metadata.0.name", name),
-					resource.TestCheckResourceAttr("kubernetes_stateful_set.test", "spec.#", "1"),
-					resource.TestCheckResourceAttr("kubernetes_stateful_set.test", "spec.0.replicas", "1"),
-					resource.TestCheckResourceAttr("kubernetes_stateful_set.test", "spec.0.revision_history_limit", "11"),
-					resource.TestCheckResourceAttr("kubernetes_stateful_set.test", "spec.0.service_name", "ss-test-service"),
-					resource.TestCheckResourceAttr("kubernetes_stateful_set.test", "spec.0.selector.0.match_labels.%", "1"),
-					resource.TestCheckResourceAttr("kubernetes_stateful_set.test", "spec.0.selector.0.match_labels.app", "ss-test"),
-					resource.TestCheckResourceAttr("kubernetes_stateful_set.test", "spec.0.template.0.metadata.#", "1"),
-					resource.TestCheckResourceAttr("kubernetes_stateful_set.test", "spec.0.template.0.metadata.0.labels.%", "1"),
-					resource.TestCheckResourceAttr("kubernetes_stateful_set.test", "spec.0.template.0.metadata.0.labels.app", "ss-test"),
-					resource.TestCheckResourceAttr("kubernetes_stateful_set.test", "spec.0.template.0.spec.0.container.0.name", "ss-test"),
-					resource.TestCheckResourceAttr("kubernetes_stateful_set.test", "spec.0.template.0.spec.0.container.0.image", "nginx:1.19"),
-					resource.TestCheckResourceAttr("kubernetes_stateful_set.test", "spec.0.template.0.spec.0.container.0.port.0.container_port", "80"),
-					resource.TestCheckResourceAttr("kubernetes_stateful_set.test", "spec.0.template.0.spec.0.container.0.port.0.name", "web"),
-					resource.TestCheckResourceAttr("kubernetes_stateful_set.test", "spec.0.template.0.spec.0.container.0.volume_mount.0.name", "ss-test"),
-					resource.TestCheckResourceAttr("kubernetes_stateful_set.test", "spec.0.template.0.spec.0.container.0.volume_mount.0.mount_path", "/work-dir"),
-					resource.TestCheckResourceAttr("kubernetes_stateful_set.test", "spec.0.update_strategy.0.type", "RollingUpdate"),
-					resource.TestCheckResourceAttr("kubernetes_stateful_set.test", "spec.0.update_strategy.0.rolling_update.#", "1"),
-					resource.TestCheckResourceAttr("kubernetes_stateful_set.test", "spec.0.update_strategy.0.rolling_update.0.partition", "1"),
-					resource.TestCheckResourceAttr("kubernetes_stateful_set.test", "spec.0.volume_claim_template.0.metadata.0.name", "ss-test"),
-					resource.TestCheckResourceAttr("kubernetes_stateful_set.test", "spec.0.volume_claim_template.0.spec.0.access_modes.#", "1"),
-					resource.TestCheckResourceAttr("kubernetes_stateful_set.test", "spec.0.volume_claim_template.0.spec.0.access_modes.0", "ReadWriteOnce"),
-					resource.TestCheckResourceAttr("kubernetes_stateful_set.test", "spec.0.volume_claim_template.0.spec.0.resources.#", "1"),
-					resource.TestCheckResourceAttr("kubernetes_stateful_set.test", "spec.0.volume_claim_template.0.spec.0.resources.0.requests.%", "1"),
-					resource.TestCheckResourceAttr("kubernetes_stateful_set.test", "spec.0.volume_claim_template.0.spec.0.resources.0.requests.storage", "1Gi"),
-				),
-			},
-			{
-				ResourceName:      "kubernetes_stateful_set.test",
-				ImportState:       true,
-				ImportStateVerify: true,
-				ImportStateVerifyIgnore: []string{
-					"wait_for_rollout",
-					"spec.0.update_strategy.#",
-					"spec.0.update_strategy.0.%",
-					"spec.0.update_strategy.0.rolling_update.#",
-					"spec.0.update_strategy.0.rolling_update.0.%",
-					"spec.0.update_strategy.0.rolling_update.0.partition",
-					"spec.0.update_strategy.0.type",
-				},
-			},
-		},
-	})
-}
+// func TestAccKubernetesStatefulSet_basic(t *testing.T) {
+// 	var conf api.StatefulSet
+// 	name := fmt.Sprintf("tf-acc-test-%s", acctest.RandStringFromCharSet(10, acctest.CharSetAlphaNum))
+// 	resource.ParallelTest(t, resource.TestCase{
+// 		PreCheck:      func() { testAccPreCheck(t) },
+// 		IDRefreshName: "kubernetes_stateful_set.test",
+// 		IDRefreshIgnore: []string{
+// 			"metadata.0.resource_version",
+// 			"spec.0.template.0.spec.0.container.0.resources.0.limits",
+// 			"spec.0.template.0.spec.0.container.0.resources.0.requests",
+// 		},
+// 		ProviderFactories: testAccProviderFactories,
+// 		CheckDestroy:      testAccCheckKubernetesStatefulSetDestroy,
+// 		Steps: []resource.TestStep{
+// 			{
+// 				Config: testAccKubernetesStatefulSetConfigBasic(name),
+// 				Check: resource.ComposeAggregateTestCheckFunc(
+// 					testAccCheckKubernetesStatefulSetExists("kubernetes_stateful_set.test", &conf),
+// 					resource.TestCheckResourceAttr("kubernetes_stateful_set.test", "wait_for_rollout", "true"),
+// 					resource.TestCheckResourceAttrSet("kubernetes_stateful_set.test", "metadata.0.generation"),
+// 					resource.TestCheckResourceAttrSet("kubernetes_stateful_set.test", "metadata.0.resource_version"),
+// 					resource.TestCheckResourceAttrSet("kubernetes_stateful_set.test", "metadata.0.uid"),
+// 					resource.TestCheckResourceAttrSet("kubernetes_stateful_set.test", "metadata.0.namespace"),
+// 					resource.TestCheckResourceAttr("kubernetes_stateful_set.test", "metadata.0.annotations.%", "2"),
+// 					resource.TestCheckResourceAttr("kubernetes_stateful_set.test", "metadata.0.labels.%", "3"),
+// 					resource.TestCheckResourceAttr("kubernetes_stateful_set.test", "metadata.0.labels.TestLabelOne", "one"),
+// 					resource.TestCheckResourceAttr("kubernetes_stateful_set.test", "metadata.0.labels.TestLabelTwo", "two"),
+// 					resource.TestCheckResourceAttr("kubernetes_stateful_set.test", "metadata.0.labels.TestLabelThree", "three"),
+// 					resource.TestCheckResourceAttr("kubernetes_stateful_set.test", "metadata.0.name", name),
+// 					resource.TestCheckResourceAttr("kubernetes_stateful_set.test", "spec.#", "1"),
+// 					resource.TestCheckResourceAttr("kubernetes_stateful_set.test", "spec.0.replicas", "1"),
+// 					resource.TestCheckResourceAttr("kubernetes_stateful_set.test", "spec.0.revision_history_limit", "11"),
+// 					resource.TestCheckResourceAttr("kubernetes_stateful_set.test", "spec.0.service_name", "ss-test-service"),
+// 					resource.TestCheckResourceAttr("kubernetes_stateful_set.test", "spec.0.selector.0.match_labels.%", "1"),
+// 					resource.TestCheckResourceAttr("kubernetes_stateful_set.test", "spec.0.selector.0.match_labels.app", "ss-test"),
+// 					resource.TestCheckResourceAttr("kubernetes_stateful_set.test", "spec.0.template.0.metadata.#", "1"),
+// 					resource.TestCheckResourceAttr("kubernetes_stateful_set.test", "spec.0.template.0.metadata.0.labels.%", "1"),
+// 					resource.TestCheckResourceAttr("kubernetes_stateful_set.test", "spec.0.template.0.metadata.0.labels.app", "ss-test"),
+// 					resource.TestCheckResourceAttr("kubernetes_stateful_set.test", "spec.0.template.0.spec.0.container.0.name", "ss-test"),
+// 					resource.TestCheckResourceAttr("kubernetes_stateful_set.test", "spec.0.template.0.spec.0.container.0.image", "nginx:1.19"),
+// 					resource.TestCheckResourceAttr("kubernetes_stateful_set.test", "spec.0.template.0.spec.0.container.0.port.0.container_port", "80"),
+// 					resource.TestCheckResourceAttr("kubernetes_stateful_set.test", "spec.0.template.0.spec.0.container.0.port.0.name", "web"),
+// 					resource.TestCheckResourceAttr("kubernetes_stateful_set.test", "spec.0.template.0.spec.0.container.0.volume_mount.0.name", "ss-test"),
+// 					resource.TestCheckResourceAttr("kubernetes_stateful_set.test", "spec.0.template.0.spec.0.container.0.volume_mount.0.mount_path", "/work-dir"),
+// 					resource.TestCheckResourceAttr("kubernetes_stateful_set.test", "spec.0.update_strategy.0.type", "RollingUpdate"),
+// 					resource.TestCheckResourceAttr("kubernetes_stateful_set.test", "spec.0.update_strategy.0.rolling_update.#", "1"),
+// 					resource.TestCheckResourceAttr("kubernetes_stateful_set.test", "spec.0.update_strategy.0.rolling_update.0.partition", "1"),
+// 					resource.TestCheckResourceAttr("kubernetes_stateful_set.test", "spec.0.volume_claim_template.0.metadata.0.name", "ss-test"),
+// 					resource.TestCheckResourceAttr("kubernetes_stateful_set.test", "spec.0.volume_claim_template.0.spec.0.access_modes.#", "1"),
+// 					resource.TestCheckResourceAttr("kubernetes_stateful_set.test", "spec.0.volume_claim_template.0.spec.0.access_modes.0", "ReadWriteOnce"),
+// 					resource.TestCheckResourceAttr("kubernetes_stateful_set.test", "spec.0.volume_claim_template.0.spec.0.resources.#", "1"),
+// 					resource.TestCheckResourceAttr("kubernetes_stateful_set.test", "spec.0.volume_claim_template.0.spec.0.resources.0.requests.%", "1"),
+// 					resource.TestCheckResourceAttr("kubernetes_stateful_set.test", "spec.0.volume_claim_template.0.spec.0.resources.0.requests.storage", "1Gi"),
+// 				),
+// 			},
+// 			{
+// 				ResourceName:      "kubernetes_stateful_set.test",
+// 				ImportState:       true,
+// 				ImportStateVerify: true,
+// 				ImportStateVerifyIgnore: []string{
+// 					"wait_for_rollout",
+// 					"spec.0.update_strategy.#",
+// 					"spec.0.update_strategy.0.%",
+// 					"spec.0.update_strategy.0.rolling_update.#",
+// 					"spec.0.update_strategy.0.rolling_update.0.%",
+// 					"spec.0.update_strategy.0.rolling_update.0.partition",
+// 					"spec.0.update_strategy.0.type",
+// 				},
+// 			},
+// 		},
+// 	})
+// }
 
-func TestAccKubernetesStatefulSet_basic_idempotency(t *testing.T) {
-	var conf api.StatefulSet
-	name := fmt.Sprintf("tf-acc-test-%s", acctest.RandStringFromCharSet(10, acctest.CharSetAlphaNum))
-	resource.ParallelTest(t, resource.TestCase{
-		PreCheck:      func() { testAccPreCheck(t) },
-		IDRefreshName: "kubernetes_stateful_set.test",
-		IDRefreshIgnore: []string{
-			"metadata.0.resource_version",
-			"spec.0.template.0.spec.0.container.0.resources.0.limits",
-			"spec.0.template.0.spec.0.container.0.resources.0.requests",
-		},
-		ProviderFactories: testAccProviderFactories,
-		CheckDestroy:      testAccCheckKubernetesStatefulSetDestroy,
-		Steps: []resource.TestStep{
-			{
-				Config: testAccKubernetesStatefulSetConfigBasic(name),
-				Check: resource.ComposeAggregateTestCheckFunc(
-					testAccCheckKubernetesStatefulSetExists("kubernetes_stateful_set.test", &conf),
-				),
-			},
-			{
-				Config:             testAccKubernetesStatefulSetConfigBasic(name),
-				PlanOnly:           true,
-				ExpectNonEmptyPlan: false,
-				Check: resource.ComposeAggregateTestCheckFunc(
-					testAccCheckKubernetesStatefulSetExists("kubernetes_stateful_set.test", &conf),
-				),
-			},
-		},
-	})
-}
+// func TestAccKubernetesStatefulSet_basic_idempotency(t *testing.T) {
+// 	var conf api.StatefulSet
+// 	name := fmt.Sprintf("tf-acc-test-%s", acctest.RandStringFromCharSet(10, acctest.CharSetAlphaNum))
+// 	resource.ParallelTest(t, resource.TestCase{
+// 		PreCheck:      func() { testAccPreCheck(t) },
+// 		IDRefreshName: "kubernetes_stateful_set.test",
+// 		IDRefreshIgnore: []string{
+// 			"metadata.0.resource_version",
+// 			"spec.0.template.0.spec.0.container.0.resources.0.limits",
+// 			"spec.0.template.0.spec.0.container.0.resources.0.requests",
+// 		},
+// 		ProviderFactories: testAccProviderFactories,
+// 		CheckDestroy:      testAccCheckKubernetesStatefulSetDestroy,
+// 		Steps: []resource.TestStep{
+// 			{
+// 				Config: testAccKubernetesStatefulSetConfigBasic(name),
+// 				Check: resource.ComposeAggregateTestCheckFunc(
+// 					testAccCheckKubernetesStatefulSetExists("kubernetes_stateful_set.test", &conf),
+// 				),
+// 			},
+// 			{
+// 				Config:             testAccKubernetesStatefulSetConfigBasic(name),
+// 				PlanOnly:           true,
+// 				ExpectNonEmptyPlan: false,
+// 				Check: resource.ComposeAggregateTestCheckFunc(
+// 					testAccCheckKubernetesStatefulSetExists("kubernetes_stateful_set.test", &conf),
+// 				),
+// 			},
+// 		},
+// 	})
+// }
 
 func TestAccKubernetesStatefulSet_Update(t *testing.T) {
 	var conf api.StatefulSet

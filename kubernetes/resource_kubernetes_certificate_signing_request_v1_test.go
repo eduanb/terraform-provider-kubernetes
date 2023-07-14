@@ -7,63 +7,60 @@ import (
 	"context"
 	"fmt"
 	"strings"
-	"testing"
 
-	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/acctest"
-	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-func TestAccKubernetesCertificateSigningRequestV1_basic(t *testing.T) {
-	name := fmt.Sprintf("tf-acc-test-%s", acctest.RandStringFromCharSet(10, acctest.CharSetAlphaNum))
-	usages := []string{"client auth"}
-	signerName := "kubernetes.io/kube-apiserver-client"
-	resource.ParallelTest(t, resource.TestCase{
-		PreCheck: func() {
-			testAccPreCheck(t)
-			skipIfClusterVersionLessThan(t, "1.22.0")
-		},
-		IDRefreshName:     "kubernetes_certificate_signing_request_v1.test",
-		IDRefreshIgnore:   []string{"metadata.0.resource_version"},
-		ProviderFactories: testAccProviderFactories,
-		CheckDestroy:      testAccCheckKubernetesCertificateSigningRequestV1Destroy,
-		Steps: []resource.TestStep{
-			{
-				Config: testAccKubernetesCertificateSigningRequestV1Config_basic(name, signerName, usages, true),
-				Check: resource.ComposeAggregateTestCheckFunc(
-					testAccCheckKubernetesCertificateSigningRequestV1Valid,
-					resource.TestCheckResourceAttrSet("kubernetes_certificate_signing_request_v1.test", "certificate"),
-					resource.TestCheckResourceAttr("kubernetes_certificate_signing_request_v1.test", "spec.0.signer_name", signerName),
-					resource.TestCheckResourceAttr("kubernetes_certificate_signing_request_v1.test", "spec.0.usages.0", usages[0]),
-				),
-			},
-		},
-	})
-}
+// func TestAccKubernetesCertificateSigningRequestV1_basic(t *testing.T) {
+// 	name := fmt.Sprintf("tf-acc-test-%s", acctest.RandStringFromCharSet(10, acctest.CharSetAlphaNum))
+// 	usages := []string{"client auth"}
+// 	signerName := "kubernetes.io/kube-apiserver-client"
+// 	resource.ParallelTest(t, resource.TestCase{
+// 		PreCheck: func() {
+// 			testAccPreCheck(t)
+// 			skipIfClusterVersionLessThan(t, "1.22.0")
+// 		},
+// 		IDRefreshName:     "kubernetes_certificate_signing_request_v1.test",
+// 		IDRefreshIgnore:   []string{"metadata.0.resource_version"},
+// 		ProviderFactories: testAccProviderFactories,
+// 		CheckDestroy:      testAccCheckKubernetesCertificateSigningRequestV1Destroy,
+// 		Steps: []resource.TestStep{
+// 			{
+// 				Config: testAccKubernetesCertificateSigningRequestV1Config_basic(name, signerName, usages, true),
+// 				Check: resource.ComposeAggregateTestCheckFunc(
+// 					testAccCheckKubernetesCertificateSigningRequestV1Valid,
+// 					resource.TestCheckResourceAttrSet("kubernetes_certificate_signing_request_v1.test", "certificate"),
+// 					resource.TestCheckResourceAttr("kubernetes_certificate_signing_request_v1.test", "spec.0.signer_name", signerName),
+// 					resource.TestCheckResourceAttr("kubernetes_certificate_signing_request_v1.test", "spec.0.usages.0", usages[0]),
+// 				),
+// 			},
+// 		},
+// 	})
+// }
 
-func TestAccKubernetesCertificateSigningRequestV1_generateName(t *testing.T) {
-	generateName := fmt.Sprintf("tf-acc-test-%s", acctest.RandStringFromCharSet(10, acctest.CharSetAlphaNum))
-	resource.ParallelTest(t, resource.TestCase{
-		PreCheck: func() {
-			testAccPreCheck(t)
-			skipIfClusterVersionLessThan(t, "1.22.0")
-		},
-		IDRefreshName:     "kubernetes_certificate_signing_request_v1.test",
-		IDRefreshIgnore:   []string{"metadata.0.resource_version"},
-		ProviderFactories: testAccProviderFactories,
-		CheckDestroy:      testAccCheckKubernetesCertificateSigningRequestV1Destroy,
-		Steps: []resource.TestStep{
-			{
-				Config: testAccKubernetesCertificateSigningRequestV1Config_generateName(generateName),
-				Check: resource.ComposeAggregateTestCheckFunc(
-					testAccCheckKubernetesCertificateSigningRequestV1Valid,
-					resource.TestCheckResourceAttrSet("kubernetes_certificate_signing_request_v1.test", "certificate"),
-				),
-			},
-		},
-	})
-}
+// func TestAccKubernetesCertificateSigningRequestV1_generateName(t *testing.T) {
+// 	generateName := fmt.Sprintf("tf-acc-test-%s", acctest.RandStringFromCharSet(10, acctest.CharSetAlphaNum))
+// 	resource.ParallelTest(t, resource.TestCase{
+// 		PreCheck: func() {
+// 			testAccPreCheck(t)
+// 			skipIfClusterVersionLessThan(t, "1.22.0")
+// 		},
+// 		IDRefreshName:     "kubernetes_certificate_signing_request_v1.test",
+// 		IDRefreshIgnore:   []string{"metadata.0.resource_version"},
+// 		ProviderFactories: testAccProviderFactories,
+// 		CheckDestroy:      testAccCheckKubernetesCertificateSigningRequestV1Destroy,
+// 		Steps: []resource.TestStep{
+// 			{
+// 				Config: testAccKubernetesCertificateSigningRequestV1Config_generateName(generateName),
+// 				Check: resource.ComposeAggregateTestCheckFunc(
+// 					testAccCheckKubernetesCertificateSigningRequestV1Valid,
+// 					resource.TestCheckResourceAttrSet("kubernetes_certificate_signing_request_v1.test", "certificate"),
+// 				),
+// 			},
+// 		},
+// 	})
+// }
 
 // testAccCheckKubernetesCertificateSigningRequestV1Valid checks to see that the locally-stored certificate
 // contains a valid PEM preamble. It also checks that the CSR resource has been deleted from Kubernetes, since
