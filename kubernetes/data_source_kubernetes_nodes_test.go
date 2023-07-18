@@ -19,19 +19,20 @@ func checkParsableQuantity(value string) error {
 }
 
 func TestAccKubernetesDataSourceNodes_basic(t *testing.T) {
+	dataSourceName := "data.kubernetes_nodes.test"
 	nodeName := regexp.MustCompile(`^[a-z0-9]+(?:[-.]{1}[a-z0-9]+)*$`)
 	zeroOrMore := regexp.MustCompile(`^[0-9]+$`)
 	oneOrMore := regexp.MustCompile(`^[1-9][0-9]*$`)
 	checkFuncs := resource.ComposeAggregateTestCheckFunc(
-		resource.TestMatchResourceAttr("data.kubernetes_nodes.test", "nodes.#", oneOrMore),
-		resource.TestMatchResourceAttr("data.kubernetes_nodes.test", "nodes.0.metadata.0.labels.%", zeroOrMore),
-		resource.TestCheckResourceAttrSet("data.kubernetes_nodes.test", "nodes.0.metadata.0.resource_version"),
-		resource.TestMatchResourceAttr("data.kubernetes_nodes.test", "nodes.0.metadata.0.name", nodeName),
-		resource.TestMatchResourceAttr("data.kubernetes_nodes.test", "nodes.0.spec.0.%", oneOrMore),
-		resource.TestCheckResourceAttrWith("data.kubernetes_nodes.test", "nodes.0.status.0.capacity.cpu", checkParsableQuantity),
-		resource.TestCheckResourceAttrWith("data.kubernetes_nodes.test", "nodes.0.status.0.capacity.memory", checkParsableQuantity),
-		resource.TestCheckResourceAttrSet("data.kubernetes_nodes.test", "nodes.0.status.0.node_info.0.architecture"),
-		resource.TestCheckResourceAttrSet("data.kubernetes_nodes.test", "nodes.0.status.0.addresses.0.address"),
+		resource.TestMatchResourceAttr(dataSourceName, "nodes.#", oneOrMore),
+		resource.TestMatchResourceAttr(dataSourceName, "nodes.0.metadata.0.labels.%", zeroOrMore),
+		resource.TestCheckResourceAttrSet(dataSourceName, "nodes.0.metadata.0.resource_version"),
+		resource.TestMatchResourceAttr(dataSourceName, "nodes.0.metadata.0.name", nodeName),
+		resource.TestMatchResourceAttr(dataSourceName, "nodes.0.spec.0.%", oneOrMore),
+		resource.TestCheckResourceAttrWith(dataSourceName, "nodes.0.status.0.capacity.cpu", checkParsableQuantity),
+		resource.TestCheckResourceAttrWith(dataSourceName, "nodes.0.status.0.capacity.memory", checkParsableQuantity),
+		resource.TestCheckResourceAttrSet(dataSourceName, "nodes.0.status.0.node_info.0.architecture"),
+		resource.TestCheckResourceAttrSet(dataSourceName, "nodes.0.status.0.addresses.0.address"),
 	)
 	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },

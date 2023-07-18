@@ -10,6 +10,7 @@ import (
 )
 
 func TestAccKubernetesDataSourceNamespace_basic(t *testing.T) {
+	dataSourceName := "data.kubernetes_namespace_v1.test"
 	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		ProviderFactories: testAccProviderFactories,
@@ -17,13 +18,13 @@ func TestAccKubernetesDataSourceNamespace_basic(t *testing.T) {
 			{
 				Config: testAccKubernetesDataSourceNamespaceConfig_basic(),
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("data.kubernetes_namespace.test", "metadata.0.name", "kube-system"),
-					resource.TestCheckResourceAttrSet("data.kubernetes_namespace.test", "metadata.0.generation"),
-					resource.TestCheckResourceAttrSet("data.kubernetes_namespace.test", "metadata.0.resource_version"),
-					resource.TestCheckResourceAttrSet("data.kubernetes_namespace.test", "metadata.0.uid"),
-					resource.TestCheckResourceAttr("data.kubernetes_namespace.test", "spec.#", "1"),
-					resource.TestCheckResourceAttr("data.kubernetes_namespace.test", "spec.0.finalizers.#", "1"),
-					resource.TestCheckResourceAttr("data.kubernetes_namespace.test", "spec.0.finalizers.0", "kubernetes"),
+					resource.TestCheckResourceAttr(dataSourceName, "metadata.0.name", "kube-system"),
+					resource.TestCheckResourceAttrSet(dataSourceName, "metadata.0.generation"),
+					resource.TestCheckResourceAttrSet(dataSourceName, "metadata.0.resource_version"),
+					resource.TestCheckResourceAttrSet(dataSourceName, "metadata.0.uid"),
+					resource.TestCheckResourceAttr(dataSourceName, "spec.#", "1"),
+					resource.TestCheckResourceAttr(dataSourceName, "spec.0.finalizers.#", "1"),
+					resource.TestCheckResourceAttr(dataSourceName, "spec.0.finalizers.0", "kubernetes"),
 				),
 			},
 		},
@@ -32,7 +33,7 @@ func TestAccKubernetesDataSourceNamespace_basic(t *testing.T) {
 
 func testAccKubernetesDataSourceNamespaceConfig_basic() string {
 	return `
-data "kubernetes_namespace" "test" {
+data "kubernetes_namespace_v1" "test" {
   metadata {
     name = "kube-system"
   }

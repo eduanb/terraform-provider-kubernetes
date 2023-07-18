@@ -12,18 +12,16 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/acctest"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
-	api "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 func TestAccKubernetesNamespace_basic(t *testing.T) {
-	var conf api.Namespace
 	nsName := fmt.Sprintf("tf-acc-test-%s", acctest.RandStringFromCharSet(10, acctest.CharSetAlphaNum))
-	resourceName := "kubernetes_namespace.test"
+	resourceName := "kubernetes_namespace_v1.test"
 
 	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
-		IDRefreshName:     "kubernetes_namespace.test",
+		IDRefreshName:     resourceName,
 		IDRefreshIgnore:   []string{"metadata.0.resource_version"},
 		ProviderFactories: testAccProviderFactories,
 		CheckDestroy:      testAccCheckKubernetesNamespaceDestroy,
@@ -31,13 +29,13 @@ func TestAccKubernetesNamespace_basic(t *testing.T) {
 			{
 				Config: testAccKubernetesNamespaceConfig_basic(nsName),
 				Check: resource.ComposeAggregateTestCheckFunc(
-					testAccCheckKubernetesNamespaceExists(resourceName, &conf),
-					resource.TestCheckResourceAttr("kubernetes_namespace.test", "metadata.0.annotations.%", "0"),
-					resource.TestCheckResourceAttr("kubernetes_namespace.test", "metadata.0.labels.%", "0"),
-					resource.TestCheckResourceAttr("kubernetes_namespace.test", "metadata.0.name", nsName),
-					resource.TestCheckResourceAttrSet("kubernetes_namespace.test", "metadata.0.generation"),
-					resource.TestCheckResourceAttrSet("kubernetes_namespace.test", "metadata.0.resource_version"),
-					resource.TestCheckResourceAttrSet("kubernetes_namespace.test", "metadata.0.uid"),
+					testAccCheckKubernetesNamespaceExists(resourceName),
+					resource.TestCheckResourceAttr(resourceName, "metadata.0.annotations.%", "0"),
+					resource.TestCheckResourceAttr(resourceName, "metadata.0.labels.%", "0"),
+					resource.TestCheckResourceAttr(resourceName, "metadata.0.name", nsName),
+					resource.TestCheckResourceAttrSet(resourceName, "metadata.0.generation"),
+					resource.TestCheckResourceAttrSet(resourceName, "metadata.0.resource_version"),
+					resource.TestCheckResourceAttrSet(resourceName, "metadata.0.uid"),
 				),
 			},
 			{
@@ -49,60 +47,60 @@ func TestAccKubernetesNamespace_basic(t *testing.T) {
 			{
 				Config: testAccKubernetesNamespaceConfig_addAnnotations(nsName),
 				Check: resource.ComposeAggregateTestCheckFunc(
-					testAccCheckKubernetesNamespaceExists("kubernetes_namespace.test", &conf),
-					resource.TestCheckResourceAttr("kubernetes_namespace.test", "metadata.0.annotations.%", "2"),
-					resource.TestCheckResourceAttr("kubernetes_namespace.test", "metadata.0.annotations.TestAnnotationOne", "one"),
-					resource.TestCheckResourceAttr("kubernetes_namespace.test", "metadata.0.annotations.TestAnnotationTwo", "two"),
-					resource.TestCheckResourceAttr("kubernetes_namespace.test", "metadata.0.labels.%", "0"),
-					resource.TestCheckResourceAttr("kubernetes_namespace.test", "metadata.0.name", nsName),
-					resource.TestCheckResourceAttrSet("kubernetes_namespace.test", "metadata.0.generation"),
-					resource.TestCheckResourceAttrSet("kubernetes_namespace.test", "metadata.0.resource_version"),
-					resource.TestCheckResourceAttrSet("kubernetes_namespace.test", "metadata.0.uid"),
+					testAccCheckKubernetesNamespaceExists(resourceName),
+					resource.TestCheckResourceAttr(resourceName, "metadata.0.annotations.%", "2"),
+					resource.TestCheckResourceAttr(resourceName, "metadata.0.annotations.TestAnnotationOne", "one"),
+					resource.TestCheckResourceAttr(resourceName, "metadata.0.annotations.TestAnnotationTwo", "two"),
+					resource.TestCheckResourceAttr(resourceName, "metadata.0.labels.%", "0"),
+					resource.TestCheckResourceAttr(resourceName, "metadata.0.name", nsName),
+					resource.TestCheckResourceAttrSet(resourceName, "metadata.0.generation"),
+					resource.TestCheckResourceAttrSet(resourceName, "metadata.0.resource_version"),
+					resource.TestCheckResourceAttrSet(resourceName, "metadata.0.uid"),
 				),
 			},
 			{
 				Config: testAccKubernetesNamespaceConfig_addLabels(nsName),
 				Check: resource.ComposeAggregateTestCheckFunc(
-					testAccCheckKubernetesNamespaceExists("kubernetes_namespace.test", &conf),
-					resource.TestCheckResourceAttr("kubernetes_namespace.test", "metadata.0.annotations.%", "2"),
-					resource.TestCheckResourceAttr("kubernetes_namespace.test", "metadata.0.annotations.TestAnnotationOne", "one"),
-					resource.TestCheckResourceAttr("kubernetes_namespace.test", "metadata.0.annotations.TestAnnotationTwo", "two"),
-					resource.TestCheckResourceAttr("kubernetes_namespace.test", "metadata.0.labels.%", "3"),
-					resource.TestCheckResourceAttr("kubernetes_namespace.test", "metadata.0.labels.TestLabelOne", "one"),
-					resource.TestCheckResourceAttr("kubernetes_namespace.test", "metadata.0.labels.TestLabelTwo", "two"),
-					resource.TestCheckResourceAttr("kubernetes_namespace.test", "metadata.0.labels.TestLabelThree", "three"),
-					resource.TestCheckResourceAttr("kubernetes_namespace.test", "metadata.0.name", nsName),
-					resource.TestCheckResourceAttrSet("kubernetes_namespace.test", "metadata.0.generation"),
-					resource.TestCheckResourceAttrSet("kubernetes_namespace.test", "metadata.0.resource_version"),
-					resource.TestCheckResourceAttrSet("kubernetes_namespace.test", "metadata.0.uid"),
+					testAccCheckKubernetesNamespaceExists(resourceName),
+					resource.TestCheckResourceAttr(resourceName, "metadata.0.annotations.%", "2"),
+					resource.TestCheckResourceAttr(resourceName, "metadata.0.annotations.TestAnnotationOne", "one"),
+					resource.TestCheckResourceAttr(resourceName, "metadata.0.annotations.TestAnnotationTwo", "two"),
+					resource.TestCheckResourceAttr(resourceName, "metadata.0.labels.%", "3"),
+					resource.TestCheckResourceAttr(resourceName, "metadata.0.labels.TestLabelOne", "one"),
+					resource.TestCheckResourceAttr(resourceName, "metadata.0.labels.TestLabelTwo", "two"),
+					resource.TestCheckResourceAttr(resourceName, "metadata.0.labels.TestLabelThree", "three"),
+					resource.TestCheckResourceAttr(resourceName, "metadata.0.name", nsName),
+					resource.TestCheckResourceAttrSet(resourceName, "metadata.0.generation"),
+					resource.TestCheckResourceAttrSet(resourceName, "metadata.0.resource_version"),
+					resource.TestCheckResourceAttrSet(resourceName, "metadata.0.uid"),
 				),
 			},
 			{
 				Config: testAccKubernetesNamespaceConfig_smallerLists(nsName),
 				Check: resource.ComposeAggregateTestCheckFunc(
-					testAccCheckKubernetesNamespaceExists("kubernetes_namespace.test", &conf),
-					resource.TestCheckResourceAttr("kubernetes_namespace.test", "metadata.0.annotations.%", "2"),
-					resource.TestCheckResourceAttr("kubernetes_namespace.test", "metadata.0.annotations.TestAnnotationOne", "one"),
-					resource.TestCheckResourceAttr("kubernetes_namespace.test", "metadata.0.annotations.Different", "1234"),
-					resource.TestCheckResourceAttr("kubernetes_namespace.test", "metadata.0.labels.%", "2"),
-					resource.TestCheckResourceAttr("kubernetes_namespace.test", "metadata.0.labels.TestLabelOne", "one"),
-					resource.TestCheckResourceAttr("kubernetes_namespace.test", "metadata.0.labels.TestLabelThree", "three"),
-					resource.TestCheckResourceAttr("kubernetes_namespace.test", "metadata.0.name", nsName),
-					resource.TestCheckResourceAttrSet("kubernetes_namespace.test", "metadata.0.generation"),
-					resource.TestCheckResourceAttrSet("kubernetes_namespace.test", "metadata.0.resource_version"),
-					resource.TestCheckResourceAttrSet("kubernetes_namespace.test", "metadata.0.uid"),
+					testAccCheckKubernetesNamespaceExists(resourceName),
+					resource.TestCheckResourceAttr(resourceName, "metadata.0.annotations.%", "2"),
+					resource.TestCheckResourceAttr(resourceName, "metadata.0.annotations.TestAnnotationOne", "one"),
+					resource.TestCheckResourceAttr(resourceName, "metadata.0.annotations.Different", "1234"),
+					resource.TestCheckResourceAttr(resourceName, "metadata.0.labels.%", "2"),
+					resource.TestCheckResourceAttr(resourceName, "metadata.0.labels.TestLabelOne", "one"),
+					resource.TestCheckResourceAttr(resourceName, "metadata.0.labels.TestLabelThree", "three"),
+					resource.TestCheckResourceAttr(resourceName, "metadata.0.name", nsName),
+					resource.TestCheckResourceAttrSet(resourceName, "metadata.0.generation"),
+					resource.TestCheckResourceAttrSet(resourceName, "metadata.0.resource_version"),
+					resource.TestCheckResourceAttrSet(resourceName, "metadata.0.uid"),
 				),
 			},
 			{
 				Config: testAccKubernetesNamespaceConfig_noLists(nsName),
 				Check: resource.ComposeAggregateTestCheckFunc(
-					testAccCheckKubernetesNamespaceExists("kubernetes_namespace.test", &conf),
-					resource.TestCheckResourceAttr("kubernetes_namespace.test", "metadata.0.annotations.%", "0"),
-					resource.TestCheckResourceAttr("kubernetes_namespace.test", "metadata.0.labels.%", "0"),
-					resource.TestCheckResourceAttr("kubernetes_namespace.test", "metadata.0.name", nsName),
-					resource.TestCheckResourceAttrSet("kubernetes_namespace.test", "metadata.0.generation"),
-					resource.TestCheckResourceAttrSet("kubernetes_namespace.test", "metadata.0.resource_version"),
-					resource.TestCheckResourceAttrSet("kubernetes_namespace.test", "metadata.0.uid"),
+					testAccCheckKubernetesNamespaceExists(resourceName),
+					resource.TestCheckResourceAttr(resourceName, "metadata.0.annotations.%", "0"),
+					resource.TestCheckResourceAttr(resourceName, "metadata.0.labels.%", "0"),
+					resource.TestCheckResourceAttr(resourceName, "metadata.0.name", nsName),
+					resource.TestCheckResourceAttrSet(resourceName, "metadata.0.generation"),
+					resource.TestCheckResourceAttrSet(resourceName, "metadata.0.resource_version"),
+					resource.TestCheckResourceAttrSet(resourceName, "metadata.0.uid"),
 				),
 			},
 		},
@@ -110,10 +108,8 @@ func TestAccKubernetesNamespace_basic(t *testing.T) {
 }
 
 func TestAccKubernetesNamespace_default_service_account(t *testing.T) {
-	var nsConf api.Namespace
-	var saConf api.ServiceAccount
 	nsName := fmt.Sprintf("tf-acc-test-%s", acctest.RandStringFromCharSet(10, acctest.CharSetAlphaNum))
-	resourceName := "kubernetes_namespace.test"
+	resourceName := "kubernetes_namespace_v1.test"
 
 	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
@@ -124,8 +120,8 @@ func TestAccKubernetesNamespace_default_service_account(t *testing.T) {
 			{
 				Config: testAccKubernetesNamespaceConfig_wait_for_default_service_acccount(nsName),
 				Check: resource.ComposeAggregateTestCheckFunc(
-					testAccCheckKubernetesNamespaceExists("kubernetes_namespace.test", &nsConf),
-					testAccCheckKubernetesDefaultServiceAccountExists(resourceName, &saConf),
+					testAccCheckKubernetesNamespaceExists(resourceName),
+					testAccCheckKubernetesDefaultServiceAccountExists(resourceName),
 				),
 			},
 			{
@@ -139,13 +135,12 @@ func TestAccKubernetesNamespace_default_service_account(t *testing.T) {
 }
 
 func TestAccKubernetesNamespace_generatedName(t *testing.T) {
-	var conf api.Namespace
 	prefix := "tf-acc-test-gen-"
-	resourceName := "kubernetes_namespace.test"
+	resourceName := "kubernetes_namespace_v1.test"
 
 	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
-		IDRefreshName:     "kubernetes_namespace.test",
+		IDRefreshName:     resourceName,
 		IDRefreshIgnore:   []string{"metadata.0.resource_version"},
 		ProviderFactories: testAccProviderFactories,
 		CheckDestroy:      testAccCheckKubernetesNamespaceDestroy,
@@ -153,14 +148,14 @@ func TestAccKubernetesNamespace_generatedName(t *testing.T) {
 			{
 				Config: testAccKubernetesNamespaceConfig_generatedName(prefix),
 				Check: resource.ComposeAggregateTestCheckFunc(
-					testAccCheckKubernetesNamespaceExists("kubernetes_namespace.test", &conf),
-					resource.TestCheckResourceAttr("kubernetes_namespace.test", "metadata.0.annotations.%", "0"),
-					resource.TestCheckResourceAttr("kubernetes_namespace.test", "metadata.0.labels.%", "0"),
-					resource.TestCheckResourceAttr("kubernetes_namespace.test", "metadata.0.generate_name", prefix),
-					resource.TestMatchResourceAttr("kubernetes_namespace.test", "metadata.0.name", regexp.MustCompile("^"+prefix)),
-					resource.TestCheckResourceAttrSet("kubernetes_namespace.test", "metadata.0.generation"),
-					resource.TestCheckResourceAttrSet("kubernetes_namespace.test", "metadata.0.resource_version"),
-					resource.TestCheckResourceAttrSet("kubernetes_namespace.test", "metadata.0.uid"),
+					testAccCheckKubernetesNamespaceExists(resourceName),
+					resource.TestCheckResourceAttr(resourceName, "metadata.0.annotations.%", "0"),
+					resource.TestCheckResourceAttr(resourceName, "metadata.0.labels.%", "0"),
+					resource.TestCheckResourceAttr(resourceName, "metadata.0.generate_name", prefix),
+					resource.TestMatchResourceAttr(resourceName, "metadata.0.name", regexp.MustCompile("^"+prefix)),
+					resource.TestCheckResourceAttrSet(resourceName, "metadata.0.generation"),
+					resource.TestCheckResourceAttrSet(resourceName, "metadata.0.resource_version"),
+					resource.TestCheckResourceAttrSet(resourceName, "metadata.0.uid"),
 				),
 			},
 			{
@@ -174,12 +169,13 @@ func TestAccKubernetesNamespace_generatedName(t *testing.T) {
 }
 
 func TestAccKubernetesNamespace_withSpecialCharacters(t *testing.T) {
-	var conf api.Namespace
 	nsName := fmt.Sprintf("tf-acc-test-%s", acctest.RandStringFromCharSet(10, acctest.CharSetAlphaNum))
+
+	resourceName := "kubernetes_namespace_v1.test"
 
 	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
-		IDRefreshName:     "kubernetes_namespace.test",
+		IDRefreshName:     resourceName,
 		IDRefreshIgnore:   []string{"metadata.0.resource_version"},
 		ProviderFactories: testAccProviderFactories,
 		CheckDestroy:      testAccCheckKubernetesNamespaceDestroy,
@@ -187,23 +183,17 @@ func TestAccKubernetesNamespace_withSpecialCharacters(t *testing.T) {
 			{
 				Config: testAccKubernetesNamespaceConfig_specialCharacters(nsName),
 				Check: resource.ComposeAggregateTestCheckFunc(
-					testAccCheckKubernetesNamespaceExists("kubernetes_namespace.test", &conf),
-					resource.TestCheckResourceAttr("kubernetes_namespace.test", "metadata.0.annotations.%", "2"),
-					//  "myhost.co.uk/any-path": "one",
-					//  "Different":             "1234",
-					//}),
-					resource.TestCheckResourceAttr("kubernetes_namespace.test", "metadata.0.annotations.myhost.co.uk/any-path", "one"),
-					resource.TestCheckResourceAttr("kubernetes_namespace.test", "metadata.0.annotations.Different", "1234"),
-					resource.TestCheckResourceAttr("kubernetes_namespace.test", "metadata.0.labels.%", "2"),
-					//  "myhost.co.uk/any-path": "one",
-					//  "TestLabelThree":        "three",
-					//}),
-					resource.TestCheckResourceAttr("kubernetes_namespace.test", "metadata.0.labels.myhost.co.uk/any-path", "one"),
-					resource.TestCheckResourceAttr("kubernetes_namespace.test", "metadata.0.labels.TestLabelThree", "three"),
-					resource.TestCheckResourceAttr("kubernetes_namespace.test", "metadata.0.name", nsName),
-					resource.TestCheckResourceAttrSet("kubernetes_namespace.test", "metadata.0.generation"),
-					resource.TestCheckResourceAttrSet("kubernetes_namespace.test", "metadata.0.resource_version"),
-					resource.TestCheckResourceAttrSet("kubernetes_namespace.test", "metadata.0.uid"),
+					testAccCheckKubernetesNamespaceExists(resourceName),
+					resource.TestCheckResourceAttr(resourceName, "metadata.0.annotations.%", "2"),
+					resource.TestCheckResourceAttr(resourceName, "metadata.0.annotations.myhost.co.uk/any-path", "one"),
+					resource.TestCheckResourceAttr(resourceName, "metadata.0.annotations.Different", "1234"),
+					resource.TestCheckResourceAttr(resourceName, "metadata.0.labels.%", "2"),
+					resource.TestCheckResourceAttr(resourceName, "metadata.0.labels.myhost.co.uk/any-path", "one"),
+					resource.TestCheckResourceAttr(resourceName, "metadata.0.labels.TestLabelThree", "three"),
+					resource.TestCheckResourceAttr(resourceName, "metadata.0.name", nsName),
+					resource.TestCheckResourceAttrSet(resourceName, "metadata.0.generation"),
+					resource.TestCheckResourceAttrSet(resourceName, "metadata.0.resource_version"),
+					resource.TestCheckResourceAttrSet(resourceName, "metadata.0.uid"),
 				),
 			},
 		},
@@ -211,12 +201,13 @@ func TestAccKubernetesNamespace_withSpecialCharacters(t *testing.T) {
 }
 
 func TestAccKubernetesNamespace_deleteTimeout(t *testing.T) {
-	var conf api.Namespace
 	nsName := fmt.Sprintf("tf-acc-test-%s", acctest.RandStringFromCharSet(10, acctest.CharSetAlphaNum))
+
+	resourceName := "kubernetes_namespace_v1.test"
 
 	resource.ParallelTest(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
-		IDRefreshName:     "kubernetes_namespace.test",
+		IDRefreshName:     resourceName,
 		IDRefreshIgnore:   []string{"metadata.0.resource_version"},
 		ProviderFactories: testAccProviderFactories,
 		CheckDestroy:      testAccCheckKubernetesNamespaceDestroy,
@@ -224,13 +215,13 @@ func TestAccKubernetesNamespace_deleteTimeout(t *testing.T) {
 			{
 				Config: testAccKubernetesNamespaceConfig_deleteTimeout(nsName),
 				Check: resource.ComposeAggregateTestCheckFunc(
-					testAccCheckKubernetesNamespaceExists("kubernetes_namespace.test", &conf),
-					resource.TestCheckResourceAttr("kubernetes_namespace.test", "metadata.0.annotations.%", "0"),
-					resource.TestCheckResourceAttr("kubernetes_namespace.test", "metadata.0.labels.%", "0"),
-					resource.TestCheckResourceAttr("kubernetes_namespace.test", "metadata.0.name", nsName),
-					resource.TestCheckResourceAttrSet("kubernetes_namespace.test", "metadata.0.generation"),
-					resource.TestCheckResourceAttrSet("kubernetes_namespace.test", "metadata.0.resource_version"),
-					resource.TestCheckResourceAttrSet("kubernetes_namespace.test", "metadata.0.uid"),
+					testAccCheckKubernetesNamespaceExists(resourceName),
+					resource.TestCheckResourceAttr(resourceName, "metadata.0.annotations.%", "0"),
+					resource.TestCheckResourceAttr(resourceName, "metadata.0.labels.%", "0"),
+					resource.TestCheckResourceAttr(resourceName, "metadata.0.name", nsName),
+					resource.TestCheckResourceAttrSet(resourceName, "metadata.0.generation"),
+					resource.TestCheckResourceAttrSet(resourceName, "metadata.0.resource_version"),
+					resource.TestCheckResourceAttrSet(resourceName, "metadata.0.uid"),
 				),
 			},
 		},
@@ -246,7 +237,7 @@ func testAccCheckKubernetesNamespaceDestroy(s *terraform.State) error {
 	ctx := context.TODO()
 
 	for _, rs := range s.RootModule().Resources {
-		if rs.Type != "kubernetes_namespace" {
+		if rs.Type != "kubernetes_namespace_v1" {
 			continue
 		}
 
@@ -261,7 +252,7 @@ func testAccCheckKubernetesNamespaceDestroy(s *terraform.State) error {
 	return nil
 }
 
-func testAccCheckKubernetesNamespaceExists(n string, obj *api.Namespace) resource.TestCheckFunc {
+func testAccCheckKubernetesNamespaceExists(n string) resource.TestCheckFunc {
 	return func(s *terraform.State) error {
 		rs, ok := s.RootModule().Resources[n]
 		if !ok {
@@ -272,20 +263,20 @@ func testAccCheckKubernetesNamespaceExists(n string, obj *api.Namespace) resourc
 		if err != nil {
 			return err
 		}
+
 		ctx := context.TODO()
 
-		out, err := conn.CoreV1().Namespaces().Get(ctx, rs.Primary.ID, metav1.GetOptions{})
+		_, err = conn.CoreV1().Namespaces().Get(ctx, rs.Primary.ID, metav1.GetOptions{})
 		if err != nil {
 			return err
 		}
 
-		*obj = *out
 		return nil
 	}
 }
 
 func testAccKubernetesNamespaceConfig_basic(nsName string) string {
-	return fmt.Sprintf(`resource "kubernetes_namespace" "test" {
+	return fmt.Sprintf(`resource "kubernetes_namespace_v1" "test" {
   metadata {
     name = "%s"
   }
@@ -294,7 +285,7 @@ func testAccKubernetesNamespaceConfig_basic(nsName string) string {
 }
 
 func testAccKubernetesNamespaceConfig_addAnnotations(nsName string) string {
-	return fmt.Sprintf(`resource "kubernetes_namespace" "test" {
+	return fmt.Sprintf(`resource "kubernetes_namespace_v1" "test" {
   metadata {
     annotations = {
       TestAnnotationOne = "one"
@@ -306,7 +297,7 @@ func testAccKubernetesNamespaceConfig_addAnnotations(nsName string) string {
 `, nsName)
 }
 func testAccKubernetesNamespaceConfig_addLabels(nsName string) string {
-	return fmt.Sprintf(`resource "kubernetes_namespace" "test" {
+	return fmt.Sprintf(`resource "kubernetes_namespace_v1" "test" {
   metadata {
     annotations = {
       TestAnnotationOne = "one"
@@ -326,7 +317,7 @@ func testAccKubernetesNamespaceConfig_addLabels(nsName string) string {
 }
 
 func testAccKubernetesNamespaceConfig_smallerLists(nsName string) string {
-	return fmt.Sprintf(`resource "kubernetes_namespace" "test" {
+	return fmt.Sprintf(`resource "kubernetes_namespace_v1" "test" {
   metadata {
     annotations = {
       TestAnnotationOne = "one"
@@ -345,7 +336,7 @@ func testAccKubernetesNamespaceConfig_smallerLists(nsName string) string {
 }
 
 func testAccKubernetesNamespaceConfig_noLists(nsName string) string {
-	return fmt.Sprintf(`resource "kubernetes_namespace" "test" {
+	return fmt.Sprintf(`resource "kubernetes_namespace_v1" "test" {
   metadata {
     name = "%s"
   }
@@ -354,7 +345,7 @@ func testAccKubernetesNamespaceConfig_noLists(nsName string) string {
 }
 
 func testAccKubernetesNamespaceConfig_generatedName(prefix string) string {
-	return fmt.Sprintf(`resource "kubernetes_namespace" "test" {
+	return fmt.Sprintf(`resource "kubernetes_namespace_v1" "test" {
   metadata {
     generate_name = "%s"
   }
@@ -363,7 +354,7 @@ func testAccKubernetesNamespaceConfig_generatedName(prefix string) string {
 }
 
 func testAccKubernetesNamespaceConfig_specialCharacters(nsName string) string {
-	return fmt.Sprintf(`resource "kubernetes_namespace" "test" {
+	return fmt.Sprintf(`resource "kubernetes_namespace_v1" "test" {
   metadata {
     annotations = {
       "myhost.co.uk/any-path" = "one"
@@ -382,7 +373,7 @@ func testAccKubernetesNamespaceConfig_specialCharacters(nsName string) string {
 }
 
 func testAccKubernetesNamespaceConfig_deleteTimeout(nsName string) string {
-	return fmt.Sprintf(`resource "kubernetes_namespace" "test" {
+	return fmt.Sprintf(`resource "kubernetes_namespace_v1" "test" {
   metadata {
     name = "%s"
   }
@@ -394,7 +385,7 @@ func testAccKubernetesNamespaceConfig_deleteTimeout(nsName string) string {
 }
 
 func testAccKubernetesNamespaceConfig_wait_for_default_service_acccount(nsName string) string {
-	return fmt.Sprintf(`resource "kubernetes_namespace" "test" {
+	return fmt.Sprintf(`resource "kubernetes_namespace_v1" "test" {
   metadata {
     name = "%s"
   }
@@ -403,8 +394,7 @@ func testAccKubernetesNamespaceConfig_wait_for_default_service_acccount(nsName s
 `, nsName)
 }
 
-func testAccCheckKubernetesDefaultServiceAccountExists(n string,
-	obj *api.ServiceAccount) resource.TestCheckFunc {
+func testAccCheckKubernetesDefaultServiceAccountExists(n string) resource.TestCheckFunc {
 	return func(s *terraform.State) error {
 		rs, ok := s.RootModule().Resources[n]
 		if !ok {
@@ -422,12 +412,11 @@ func testAccCheckKubernetesDefaultServiceAccountExists(n string,
 			return err
 		}
 
-		out, err := conn.CoreV1().ServiceAccounts(namespace).Get(ctx, "default", metav1.GetOptions{})
+		_, err = conn.CoreV1().ServiceAccounts(namespace).Get(ctx, "default", metav1.GetOptions{})
 		if err != nil {
 			return err
 		}
 
-		*obj = *out
 		return nil
 	}
 }
