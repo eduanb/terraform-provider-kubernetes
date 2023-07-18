@@ -5,3 +5,9 @@ nodes:
   extraMounts:
   - hostPath: "./.github/config/seccomp-profiles"
     containerPath: "/var/lib/kubelet/seccomp/profiles"
+    readOnly: true
+- role: worker
+  extraMounts:
+  - hostPath: "./.github/config/seccomp-profiles"
+    containerPath: "/var/lib/kubelet/seccomp/profiles"
+    readOnly: true
