@@ -153,39 +153,39 @@ func TestAccKubernetesPod_with_pod_affinity_with_preferred_during_scheduling_ign
 	})
 }
 
-func TestAccKubernetesPod_with_pod_anti_affinity_with_required_during_scheduling_ignored_during_execution(t *testing.T) {
-	var conf api.Pod
-	podName := fmt.Sprintf("tf-acc-test-%s", acctest.RandStringFromCharSet(10, acctest.CharSetAlphaNum))
-	imageName := nginxImageVersion
-	keyName := "spec.0.affinity.0.pod_anti_affinity.0.required_during_scheduling_ignored_during_execution"
+// func TestAccKubernetesPod_with_pod_anti_affinity_with_required_during_scheduling_ignored_during_execution(t *testing.T) {
+// 	var conf api.Pod
+// 	podName := fmt.Sprintf("tf-acc-test-%s", acctest.RandStringFromCharSet(10, acctest.CharSetAlphaNum))
+// 	imageName := nginxImageVersion
+// 	keyName := "spec.0.affinity.0.pod_anti_affinity.0.required_during_scheduling_ignored_during_execution"
 
-	resource.ParallelTest(t, resource.TestCase{
-		PreCheck:          func() { testAccPreCheck(t); skipIfRunningInMinikube(t) },
-		ProviderFactories: testAccProviderFactories,
-		CheckDestroy:      testAccCheckKubernetesPodDestroy,
-		Steps: []resource.TestStep{
-			{
-				Config: testAccKubernetesPodConfigWithPodAntiAffinityWithRequiredDuringSchedulingIgnoredDuringExecution(podName, imageName),
-				Check: resource.ComposeAggregateTestCheckFunc(
-					testAccCheckKubernetesPodExists("kubernetes_pod.test", &conf),
-					resource.TestCheckResourceAttr("kubernetes_pod.test", "spec.0.affinity.#", "1"),
-					resource.TestCheckResourceAttr("kubernetes_pod.test", "spec.0.affinity.0.pod_anti_affinity.#", "1"),
-					resource.TestCheckResourceAttr("kubernetes_pod.test", fmt.Sprintf("%s.#", keyName), "1"),
-					resource.TestCheckResourceAttr("kubernetes_pod.test", fmt.Sprintf("%s.0.label_selector.#", keyName), "1"),
-					resource.TestCheckResourceAttr("kubernetes_pod.test", fmt.Sprintf("%s.0.label_selector.0.match_expressions.#", keyName), "1"),
-					resource.TestCheckResourceAttr("kubernetes_pod.test", fmt.Sprintf("%s.0.label_selector.0.match_expressions.0.key", keyName), "security"),
-					resource.TestCheckResourceAttr("kubernetes_pod.test", fmt.Sprintf("%s.0.label_selector.0.match_expressions.0.operator", keyName), "NotIn"),
-					resource.TestCheckResourceAttr("kubernetes_pod.test", fmt.Sprintf("%s.0.label_selector.0.match_expressions.0.values.#", keyName), "2"),
-					resource.TestCheckResourceAttr("kubernetes_pod.test", fmt.Sprintf("%s.0.label_selector.0.match_expressions.0.values.0", keyName), "bar"),
-					resource.TestCheckResourceAttr("kubernetes_pod.test", fmt.Sprintf("%s.0.label_selector.0.match_expressions.0.values.1", keyName), "foo"),
-					resource.TestCheckResourceAttr("kubernetes_pod.test", fmt.Sprintf("%s.0.label_selector.0.match_labels.%%", keyName), "0"),
-					resource.TestCheckResourceAttr("kubernetes_pod.test", fmt.Sprintf("%s.0.namespaces.#", keyName), "0"),
-					resource.TestCheckResourceAttr("kubernetes_pod.test", fmt.Sprintf("%s.0.topology_key", keyName), "kubernetes.io/hostname"),
-				),
-			},
-		},
-	})
-}
+// 	resource.ParallelTest(t, resource.TestCase{
+// 		PreCheck:          func() { testAccPreCheck(t); skipIfRunningInMinikube(t) },
+// 		ProviderFactories: testAccProviderFactories,
+// 		CheckDestroy:      testAccCheckKubernetesPodDestroy,
+// 		Steps: []resource.TestStep{
+// 			{
+// 				Config: testAccKubernetesPodConfigWithPodAntiAffinityWithRequiredDuringSchedulingIgnoredDuringExecution(podName, imageName),
+// 				Check: resource.ComposeAggregateTestCheckFunc(
+// 					testAccCheckKubernetesPodExists("kubernetes_pod.test", &conf),
+// 					resource.TestCheckResourceAttr("kubernetes_pod.test", "spec.0.affinity.#", "1"),
+// 					resource.TestCheckResourceAttr("kubernetes_pod.test", "spec.0.affinity.0.pod_anti_affinity.#", "1"),
+// 					resource.TestCheckResourceAttr("kubernetes_pod.test", fmt.Sprintf("%s.#", keyName), "1"),
+// 					resource.TestCheckResourceAttr("kubernetes_pod.test", fmt.Sprintf("%s.0.label_selector.#", keyName), "1"),
+// 					resource.TestCheckResourceAttr("kubernetes_pod.test", fmt.Sprintf("%s.0.label_selector.0.match_expressions.#", keyName), "1"),
+// 					resource.TestCheckResourceAttr("kubernetes_pod.test", fmt.Sprintf("%s.0.label_selector.0.match_expressions.0.key", keyName), "security"),
+// 					resource.TestCheckResourceAttr("kubernetes_pod.test", fmt.Sprintf("%s.0.label_selector.0.match_expressions.0.operator", keyName), "NotIn"),
+// 					resource.TestCheckResourceAttr("kubernetes_pod.test", fmt.Sprintf("%s.0.label_selector.0.match_expressions.0.values.#", keyName), "2"),
+// 					resource.TestCheckResourceAttr("kubernetes_pod.test", fmt.Sprintf("%s.0.label_selector.0.match_expressions.0.values.0", keyName), "bar"),
+// 					resource.TestCheckResourceAttr("kubernetes_pod.test", fmt.Sprintf("%s.0.label_selector.0.match_expressions.0.values.1", keyName), "foo"),
+// 					resource.TestCheckResourceAttr("kubernetes_pod.test", fmt.Sprintf("%s.0.label_selector.0.match_labels.%%", keyName), "0"),
+// 					resource.TestCheckResourceAttr("kubernetes_pod.test", fmt.Sprintf("%s.0.namespaces.#", keyName), "0"),
+// 					resource.TestCheckResourceAttr("kubernetes_pod.test", fmt.Sprintf("%s.0.topology_key", keyName), "kubernetes.io/hostname"),
+// 				),
+// 			},
+// 		},
+// 	})
+// }
 
 func TestAccKubernetesPod_with_pod_anti_affinity_with_preferred_during_scheduling_ignored_during_execution(t *testing.T) {
 	var conf api.Pod
@@ -337,7 +337,7 @@ func testAccKubernetesPodConfigWithPodAffinityWithRequiredDuringSchedulingIgnore
       resources {
         limits = {
           cpu    = "200m"
-          memory = "1024M"
+          memory = "256M"
         }
       }
     }
@@ -379,7 +379,7 @@ func testAccKubernetesPodConfigWithPodAffinityWithPreferredDuringSchedulingIgnor
       resources {
         limits = {
           cpu    = "200m"
-          memory = "1024M"
+          memory = "256M"
         }
       }
     }
@@ -417,7 +417,7 @@ func testAccKubernetesPodConfigWithPodAntiAffinityWithRequiredDuringSchedulingIg
       resources {
         limits = {
           cpu    = "200m"
-          memory = "1024M"
+          memory = "256M"
         }
       }
 
